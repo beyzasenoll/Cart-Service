@@ -29,17 +29,36 @@ public class CartServiceImpl implements CartService {
     private static final double MAX_TOTAL_PRICE = 500000; // Maksimum toplam tutar
 
 
-    public CartServiceImpl(Cart cart, PromotionService promotionService, List<Promotion> promotions) {
+    public CartServiceImpl(Cart cart, List<Promotion> promotions) {
         this.cart = cart;
         this.promotions = promotions;
     }
 
     public boolean addItemToCart(ItemDto itemDto) {
+        logger.info("Adding item to cart: {}", itemDto);
+
         Item item = itemMapper.updateItemFromDto(itemDto);
+        logger.debug("Mapped Item: {}", item);
 
         if (!isValidItem(item)) {
             logger.error("Invalid item: {}", item);
             return false;
+        }
+
+        // Sepetteki mevcut ürünü kontrol et
+        Item existingItem = findExistingItemInCart(item);
+        if (existingItem != null) {
+            int newQuantity = existingItem.getQuantity() + item.getQuantity();
+            logger.info("Existing item found in cart. Current quantity: {}, New quantity: {}", existingItem.getQuantity(), newQuantity);
+
+            if (newQuantity > 10) {
+                logger.error("Cannot add more than 10 of the same item. Current quantity: {}", newQuantity);
+                return false;
+            }
+
+            existingItem.setQuantity(newQuantity);
+            logger.info("Quantity updated for item: {}", existingItem);
+            return true;
         }
 
         if (!isCartValid(item)) {
@@ -53,23 +72,50 @@ public class CartServiceImpl implements CartService {
         } else {
             logger.error("Failed to add item: {}", item);
         }
+
         return isAdded;
     }
 
+    private Item findExistingItemInCart(Item item) {
+        logger.info("Finding existing item in cart: {}", item);
+        for (Item cartItem : cart.getItems()) {
+            if (cartItem.getItemId() == item.getItemId()) {
+                logger.info("Found existing item in cart: {}", cartItem);
+                return cartItem;
+            }
+        }
+        logger.warn("No existing item found in cart for item: {}", item);
+        return null;
+    }
+
     private boolean isValidItem(Item item) {
+        logger.info("Validating item: {}", item);
+
         if (item instanceof DigitalItem) {
-            return ((DigitalItem) item).isValidQuantity(item.getQuantity());
+            boolean isValid = ((DigitalItem) item).isValidQuantity(item.getQuantity());
+            logger.info("Digital item validation result: {}", isValid);
+            return isValid;
         } else if (item instanceof DefaultItem) {
-            return ((DefaultItem) item).isValidQuantity(item.getQuantity());
+            boolean isValid = ((DefaultItem) item).isValidQuantity(item.getQuantity());
+            logger.info("Default item validation result: {}", isValid);
+            return isValid;
         } else if (item instanceof VasItem) {
             DefaultItem parentItem = findParentItem((VasItem) item);
-            if (parentItem == null) return false;
-            return item.getQuantity() <= 3 && item.getPrice() <= parentItem.getPrice();
+            if (parentItem == null) {
+                logger.warn("No parent item found for VasItem: {}", item);
+                return false;
+            }
+            boolean isValid = ((VasItem) item).isValidQuantity(item.getQuantity()) && item.getPrice() <= parentItem.getPrice();
+            logger.info("VasItem validation result: {}", isValid);
+            return isValid;
         }
+
+        logger.warn("Invalid item type: {}", item);
         return false;
     }
 
     private boolean isCartValid(Item item) {
+        logger.info("Validating cart for item: {}", item);
         int uniqueItemCount = 0; // Benzersiz öğe sayısı
         int totalQuantity = 0; // Toplam ürün adedi
         double totalPrice = 0.0; // Toplam fiyat
@@ -100,18 +146,22 @@ public class CartServiceImpl implements CartService {
             return false;
         }
 
+        logger.info("Cart validation successful for item: {}", item);
         return true;
     }
 
     private DefaultItem findParentItem(VasItem vasItem) {
+        logger.info("Finding parent item for VasItem: {}", vasItem);
         for (Item item : cart.getItems()) {
             if (item instanceof DefaultItem) {
                 DefaultItem defaultItem = (DefaultItem) item;
                 if (defaultItem.canAddVasItem(vasItem)) {
+                    logger.info("Found parent item for VasItem: {}", defaultItem);
                     return defaultItem;
                 }
             }
         }
+        logger.warn("No parent item found for VasItem: {}", vasItem);
         return null;
     }
 

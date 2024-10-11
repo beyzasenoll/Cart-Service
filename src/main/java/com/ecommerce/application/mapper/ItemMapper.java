@@ -2,8 +2,10 @@ package com.ecommerce.application.mapper;
 
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.dto.ItemDto;
+import com.ecommerce.application.factory.ItemFactory;
 
 public class ItemMapper {
+    private static ItemFactory itemFactory ;
 
     public static ItemDto toItemDto(Item item) {
         ItemDto itemDto = new ItemDto();
@@ -15,12 +17,16 @@ public class ItemMapper {
         return itemDto;
     }
 
-    public static void updateItemFromDto(ItemDto itemDto, Item item) {
-        item.itemId = itemDto.itemId;
-        item.categoryId = itemDto.categoryId;
-        item.sellerId = itemDto.sellerId;
-        item.price = itemDto.price;
-        item.quantity = itemDto.quantity;
+    public static Item updateItemFromDto(ItemDto itemDto) {
+
+        Item item = itemFactory.createItem(
+                itemDto.itemId,
+                itemDto.categoryId,
+                itemDto.sellerId,
+                itemDto.price,
+                itemDto.quantity);
+
+        return item;
     }
 }
 

@@ -9,10 +9,6 @@ public abstract class Item {
     public int sellerId;
     public double price;
     public int quantity;
-    public Item(){
-
-    }
-
     public int getItemId() {
         return itemId;
     }

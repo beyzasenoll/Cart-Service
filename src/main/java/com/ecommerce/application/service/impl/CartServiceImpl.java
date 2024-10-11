@@ -5,6 +5,7 @@ import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.promotion.Promotion;
 import com.ecommerce.application.dto.ItemDto;
 import com.ecommerce.application.factory.impl.ItemFactoryImpl;
+import com.ecommerce.application.mapper.ItemMapper;
 import com.ecommerce.application.service.CartService;
 import com.ecommerce.application.service.PromotionService;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 public class CartServiceImpl implements CartService {
     private final Cart cart;
     private List<Promotion> promotions;
+    ItemMapper itemMapper;
 
     public CartServiceImpl(Cart cart, PromotionService promotionService, List<Promotion> promotions) {
         this.cart = cart;
@@ -29,17 +31,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addItemToCart(ItemDto itemdto) {
-        // todo : map ItemDto to Item
-
-        ItemFactoryImpl factory = new ItemFactoryImpl();
-
-        Item item = factory.createItem(
-                itemdto.itemId,
-                itemdto.categoryId,
-                itemdto.sellerId,
-                itemdto.price,
-                itemdto.quantity
-        );
+      Item item =  itemMapper.updateItemFromDto(itemdto);
 
         if (cart.addItem(item)) {
             System.out.println("Item added to cart.");

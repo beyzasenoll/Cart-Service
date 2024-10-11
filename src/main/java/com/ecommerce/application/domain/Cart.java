@@ -39,9 +39,11 @@ public class Cart {
         return items; // Return a copy for protection
     }
 
-    public void clearCart() {
+    public boolean clearCart() {
         items.clear();
+        return true;
     }
+
 
     public int getItemCount() {
         return items.size();

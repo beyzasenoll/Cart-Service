@@ -1,10 +1,13 @@
 package com.ecommerce.application.controller;
 
+import com.ecommerce.application.dto.CartDisplayDto;
 import com.ecommerce.application.dto.ItemDto;
+import com.ecommerce.application.dto.ResponseDto;
 import com.ecommerce.application.mapper.ItemMapper;
 import com.ecommerce.application.service.CartService;
 import com.ecommerce.application.service.PromotionService;
 import org.apache.catalina.mapper.Mapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,46 +15,36 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
-    private final PromotionService promotionService;
 
     public CartController(CartService cartService, PromotionService promotionService) {
         this.cartService = cartService;
-
-        this.promotionService = promotionService;
     }
 
-    @PostMapping("/reset")
-    public void resetCart() {
-        cartService.resetCart();
+    @PostMapping("/resetCart")
+    public ResponseEntity<ResponseDto> resetCart() {
+        boolean result = cartService.resetCart();
+        String message = result ? "Cart reset successfully." : "Failed to reset cart.";
+        return ResponseEntity.ok(new ResponseDto(result, message));
     }
 
-    @GetMapping("/total")
-    public void displayCartTotal() {
-        cartService.getDiscountedPrice();
-    }
 
     @PostMapping("/addItem")
-    public void addItemToCart(@RequestBody ItemDto itemDto) {
-    cartService.addItemToCart(itemDto);
+    public ResponseEntity<ResponseDto> addItem(@RequestBody ItemDto itemDto) {
+        boolean result = cartService.addItemToCart(itemDto);
+        String message = result ? "Item added successfully." : "Failed to add item.";
+        return ResponseEntity.ok(new ResponseDto(result, message));
     }
 
-    @DeleteMapping("/remove/{itemId}")
-    public void removeItemFromCart(@PathVariable int itemId) {
-        cartService.removeItemFromCart(itemId);
+    @DeleteMapping("/removeItem/{itemId}")
+    public ResponseEntity<ResponseDto> removeItemFromCart(@PathVariable int itemId) {
+        boolean result = cartService.removeItemFromCart(itemId);
+        String message = result ? "Item removed successfully." : "Failed to remove item.";
+        return ResponseEntity.ok(new ResponseDto(result, message));
     }
 
-    @PostMapping("/get-promotion")
-    public double getBestPromotion() {
-        return cartService.getDiscount();
-    }
-
-    @GetMapping("/items")
-    public void displayCartItems() {
-        cartService.displayCartItems();
-    }
-
-    @GetMapping("/count")
-    public int getCartItemCount() {
-        return cartService.getCartItemCount();
-    }
+   /*  @GetMapping("/displayCart")
+    public ResponseEntity<ResponseDto> displayCart() {
+        CartDisplayDto displayInfo = cartService.displayCart();
+        return ResponseEntity.ok(new ResponseDto(true, displayInfo));
+    } */
 }

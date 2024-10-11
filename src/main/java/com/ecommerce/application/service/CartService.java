@@ -5,11 +5,11 @@ import com.ecommerce.application.dto.ItemDto;
 public interface CartService {
 
 
-    void resetCart();
+    boolean resetCart();
 
-    void addItemToCart(ItemDto itemdto);
-    void removeItemFromCart(int itemId);
-    void displayCartItems();
+    boolean addItemToCart(ItemDto itemdto);
+    boolean removeItemFromCart(int itemId);
+    void displayCart();
     int getCartItemCount();
     double getDiscountedPrice();
     double getDiscount();

@@ -4,16 +4,19 @@ import com.ecommerce.application.domain.Cart;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.promotion.Promotion;
 import com.ecommerce.application.dto.ItemDto;
-import com.ecommerce.application.factory.impl.ItemFactoryImpl;
 import com.ecommerce.application.mapper.ItemMapper;
 import com.ecommerce.application.service.CartService;
 import com.ecommerce.application.service.PromotionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CartServiceImpl implements CartService {
+    Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
+
     private final Cart cart;
     private List<Promotion> promotions;
     ItemMapper itemMapper;
@@ -24,33 +27,40 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void resetCart() {
-        cart.clearCart();
-        System.out.println("Cart has been reset.");
-    }
-
-    @Override
-    public void addItemToCart(ItemDto itemdto) {
-      Item item =  itemMapper.updateItemFromDto(itemdto);
-
-        if (cart.addItem(item)) {
-            System.out.println("Item added to cart.");
+    public boolean resetCart() {
+        boolean isCleared = cart.clearCart();
+        if (isCleared) {
+            logger.info("Cart reset successfully.");
         } else {
-            System.out.println("Failed to add item.");
+            logger.error("Failed to reset cart");
         }
+        return isCleared;
     }
+    public boolean addItemToCart(ItemDto itemDto) {
+        Item item = itemMapper.updateItemFromDto(itemDto);
 
-    @Override
-    public void removeItemFromCart(int itemId) {
-        if (cart.removeItem(itemId)) {
-            System.out.println("Item removed from cart.");
+        boolean isAdded = cart.addItem(item);
+        if (isAdded) {
+            logger.info("Item added to cart: {}", item);
         } else {
-            System.out.println("Item not found in cart.");
+            logger.error("Failed to add item: {}", item);
         }
+        return isAdded;
     }
 
     @Override
-    public void displayCartItems() {
+    public boolean removeItemFromCart(int itemId) {
+        boolean isRemove=cart.removeItem(itemId);
+        if (isRemove) {
+            logger.info("Item removed from cart");
+        } else {
+            logger.info("Failed to remove item");
+        }
+        return isRemove;
+    }
+
+    @Override
+    public void displayCart() {
         cart.getItems().forEach((item) -> {
             System.out.printf("Item ID: %d, Price: %.2f\n",
                     item.getItemId(), item.getTotalPrice());

@@ -12,11 +12,6 @@ public class VasItem extends Item {
     }
 
     @Override
-    public boolean canAddVasItem(VasItem vasItem) {
-        return false; // VAS Item başka VAS Item'a eklenemez.
-    }
-
-    @Override
     public double getTotalPrice() {
         return price * quantity;
     }

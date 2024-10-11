@@ -11,17 +11,15 @@ public class DefaultItem extends Item {
     }
 
     @Override
-    public boolean canAddVasItem(VasItem vasItem) {
-        return categoryId == 1001 || categoryId == 3004; // Sadece Mobilya veya Elektronik kategorisine VAS item eklenebilir.
-    }
-
-    @Override
     public double getTotalPrice() {
         return price * quantity;
     }
 
     @Override
     public boolean isValidQuantity(int quantity) {
-        return quantity <= 10; // Default item maksimum 10 adet olabilir.
+        return quantity <= 10;
+    }
+    public boolean canAddVasItem(VasItem vasItem) {
+        return categoryId == 1001 || categoryId == 3004; //  Mobilya veya Elektronik
     }
 }

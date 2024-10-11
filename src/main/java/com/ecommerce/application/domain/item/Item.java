@@ -33,8 +33,6 @@ public abstract class Item {
         return quantity;
     }
 
-    abstract boolean canAddVasItem(VasItem vasItem);
-
     public abstract double getTotalPrice();
 
     abstract boolean isValidQuantity(int quantity);

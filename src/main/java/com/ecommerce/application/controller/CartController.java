@@ -1,17 +1,13 @@
 package com.ecommerce.application.controller;
 
-import com.ecommerce.application.dto.CartDisplayDto;
 import com.ecommerce.application.dto.ItemDto;
 import com.ecommerce.application.dto.ResponseDto;
-import com.ecommerce.application.mapper.ItemMapper;
 import com.ecommerce.application.service.CartService;
 import com.ecommerce.application.service.PromotionService;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/cart")
 public class CartController {
 
     private final CartService cartService;

@@ -10,18 +10,13 @@ public class DigitalItem extends Item {
     }
 
     @Override
-    public boolean canAddVasItem(VasItem vasItem) {
-        return false; // DigitalItem'a VAS item eklenemez.
-    }
-
-    @Override
     public double getTotalPrice() {
         return price * quantity;
     }
 
     @Override
     public boolean isValidQuantity(int quantity) {
-        return quantity <= 5; // Digital item maksimum 5 adet olabilir.
+        return this.quantity <= 5;
     }
 }
 

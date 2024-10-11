@@ -1,6 +1,7 @@
 package com.ecommerce.application.service;
 
 import com.ecommerce.application.dto.ItemDto;
+import com.ecommerce.application.dto.VasItemDto;
 
 public interface CartService {
 
@@ -8,10 +9,9 @@ public interface CartService {
     boolean resetCart();
 
     boolean addItemToCart(ItemDto itemdto);
+    boolean addVasItemToItem(VasItemDto vasItemDto);
     boolean removeItemFromCart(int itemId);
     void displayCart();
-    int getCartItemCount();
-    double getDiscountedPrice();
-    double getDiscount();
+
 }
 

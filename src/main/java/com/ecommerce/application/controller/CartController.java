@@ -1,7 +1,6 @@
 package com.ecommerce.application.controller;
 
-import com.ecommerce.application.dto.ItemDto;
-import com.ecommerce.application.dto.ResponseDto;
+import com.ecommerce.application.dto.*;
 import com.ecommerce.application.service.CartService;
 import com.ecommerce.application.service.PromotionService;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +14,24 @@ public class CartController {
     public CartController(CartService cartService, PromotionService promotionService) {
         this.cartService = cartService;
     }
+    @PostMapping("/addItem")
+    public ResponseEntity<ResponseDto> addItem(@RequestBody ItemDto itemDto) {
+        boolean result = cartService.addItemToCart(itemDto);
+        String message = result ? "Item added successfully." : "Failed to add item.";
+        return ResponseEntity.ok(new ResponseDto(result, message));
+    }
+
+    @PostMapping("/addVasItemToItem")
+    public ResponseEntity<ResponseDto> addVasItemToItem(@RequestBody VasItemDto vasItemDto){
+        boolean result = cartService.addVasItemToItem(vasItemDto);
+        String message=result ? "Vas item added succesfully" : "Failed to add vasItem";
+        return ResponseEntity.ok(new ResponseDto(result,message));
+        }
 
     @PostMapping("/resetCart")
     public ResponseEntity<ResponseDto> resetCart() {
         boolean result = cartService.resetCart();
         String message = result ? "Cart reset successfully." : "Failed to reset cart.";
-        return ResponseEntity.ok(new ResponseDto(result, message));
-    }
-
-
-    @PostMapping("/addItem")
-    public ResponseEntity<ResponseDto> addItem(@RequestBody ItemDto itemDto) {
-        boolean result = cartService.addItemToCart(itemDto);
-        String message = result ? "Item added successfully." : "Failed to add item.";
         return ResponseEntity.ok(new ResponseDto(result, message));
     }
 

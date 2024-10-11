@@ -19,7 +19,7 @@ public class DefaultItem extends Item {
     public boolean isValidQuantity(int quantity) {
         return quantity <= 10;
     }
-    public boolean canAddVasItem(VasItem vasItem) {
-        return categoryId == 1001 || categoryId == 3004; //  Mobilya veya Elektronik
+    public boolean canAddVasItem() {
+        return (categoryId == 1001 || categoryId == 3004); //  Mobilya veya Elektronik
     }
 }

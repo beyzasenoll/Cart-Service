@@ -2,24 +2,23 @@ package com.ecommerce.application.domain.item;
 
 public class DefaultItem extends Item {
 
+    private static final int MAX_QUANTITY = 10;
+
     public DefaultItem(int itemId, int categoryId, int sellerId, double price, int quantity) {
-        this.itemId = itemId;
-        this.categoryId = categoryId;
-        this.sellerId = sellerId;
-        this.price = price;
-        this.quantity = quantity;
+        super(itemId, categoryId, sellerId, price, quantity);
     }
 
     @Override
     public double getTotalPrice() {
-        return price * quantity;
+        return getPrice() * getQuantity();
     }
 
     @Override
     public boolean isValidQuantity(int quantity) {
-        return quantity <= 10;
+        return quantity <= MAX_QUANTITY;
     }
+
     public boolean canAddVasItem() {
-        return (categoryId == 1001 || categoryId == 3004); //  Mobilya veya Elektronik
+        return (getCategoryId() == 1001 || getCategoryId() == 3004); // Mobilya veya Elektronik
     }
 }

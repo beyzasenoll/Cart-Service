@@ -1,4 +1,4 @@
-package com.ecommerce.application.service.impl;
+package com.ecommerce.application.service.impl.vasItem;
 
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.DefaultItem;
@@ -6,21 +6,19 @@ import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
 import com.ecommerce.application.dto.VasItemDto;
 import com.ecommerce.application.mapper.VasItemMapper;
-import com.ecommerce.application.service.VasItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class VasItemServiceImpl implements VasItemService {
-    Logger logger = LoggerFactory.getLogger(VasItemServiceImpl.class);
+@Component
+public class VasItemManager {
+    Logger logger = LoggerFactory.getLogger(VasItemManager.class);
     private final Cart cart;
 
-    public VasItemServiceImpl(Cart cart) {
+    public VasItemManager(Cart cart) {
         this.cart = cart;
     }
 
-    @Override
     public boolean addVasItemToItem(VasItemDto vasItemDto) {
         logger.info("Attempting to add VAS item to cart: {}", vasItemDto);
 
@@ -53,7 +51,7 @@ public class VasItemServiceImpl implements VasItemService {
                     logger.info("Parent item found and can accept VAS item. Parent ID: {}", parentId);
                     return true;
                 } else {
-                    logger.error("Parent category ID should be 1001 or 3004 your category id is:  ", item.categoryId);
+                    logger.error("Parent category ID should be 1001 or 3004 your category id is: {}", item.getCategoryId());
                 }
             }
         }

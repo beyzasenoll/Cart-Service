@@ -2,21 +2,20 @@ package com.ecommerce.application.domain.item;
 
 public class VasItem extends Item {
 
-    public VasItem(int itemId, int categoryId, int sellerId, double price, int quantity) {
-        this.itemId = itemId;
-        this.categoryId = categoryId;
-        this.sellerId = 5003;
-        this.price = price;
-        this.quantity = quantity;
+    private static final int MAX_QUANTITY = 3;
+    private static final int DEFAULT_SELLER_ID = 5003;
+
+    public VasItem(int itemId, int categoryId, double price, int quantity) {
+        super(itemId, categoryId, DEFAULT_SELLER_ID, price, quantity);
     }
 
     @Override
     public double getTotalPrice() {
-        return price * quantity;
+        return getPrice() * getQuantity();
     }
 
     @Override
     public boolean isValidQuantity(int quantity) {
-        return quantity <= 3; // VAS item maksimum 3 adet olabilir.
+        return quantity <= MAX_QUANTITY;
     }
 }

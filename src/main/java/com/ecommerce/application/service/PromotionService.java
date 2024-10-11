@@ -2,19 +2,30 @@ package com.ecommerce.application.service;
 
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.promotion.Promotion;
+import com.ecommerce.application.dto.CartDisplayDto;
+import com.ecommerce.application.dto.PromotionDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class PromotionService {
+    private final List<Promotion> promotions;
 
-    private List<Promotion> promotions;
 
     public PromotionService(List<Promotion> promotions) {
         this.promotions = promotions;
     }
 
     public double applyBestPromotion(Cart cart) {
+        return findBestPromotion(cart).getDiscount();
+    }
+
+    public int getBestPromotionId(Cart cart) {
+        return findBestPromotion(cart).getId();
+    }
+
+    private PromotionDto findBestPromotion(Cart cart) {
         double bestDiscount = 0;
         Promotion bestPromotion = null;
 
@@ -26,6 +37,6 @@ public class PromotionService {
             }
         }
 
-        return bestDiscount; // Return the best discount found
+        return new PromotionDto(bestPromotion, bestDiscount);
     }
 }

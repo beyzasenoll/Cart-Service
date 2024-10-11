@@ -44,7 +44,7 @@ public class CartController {
 
     @GetMapping("/displayCart")
     public ResponseEntity<ResponseDto> displayCart() {
-        CartDisplayDto displayInfo = (CartDisplayDto) cartService.displayCart();
+        CartDisplayDto displayInfo = cartService.displayCart();
         return ResponseEntity.ok(new ResponseDto(true, displayInfo));
     }
 }

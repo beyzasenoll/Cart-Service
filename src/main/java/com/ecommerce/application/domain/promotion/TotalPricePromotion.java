@@ -10,6 +10,9 @@ public class TotalPricePromotion implements Promotion {
         double totalPrice = cart.getTotalPrice();
         double discount = 0;
 
+        if (!isApplicable(cart)) {
+            return 0;
+        }
         if (totalPrice < 5000) {
             discount = 250;
         } else if (totalPrice < 10000) {
@@ -28,4 +31,8 @@ public class TotalPricePromotion implements Promotion {
         return ID;
     }
 
+    @Override
+    public boolean isApplicable(Cart cart) {
+        return cart.getTotalPrice() > 0;
+    }
 }

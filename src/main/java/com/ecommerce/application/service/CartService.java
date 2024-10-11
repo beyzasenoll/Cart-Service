@@ -1,6 +1,7 @@
 package com.ecommerce.application.service;
 
 import com.ecommerce.application.domain.item.Item;
+import com.ecommerce.application.dto.CartDisplayDto;
 import com.ecommerce.application.dto.ItemDto;
 import com.ecommerce.application.dto.VasItemDto;
 
@@ -14,7 +15,7 @@ public interface CartService {
     boolean addItemToCart(ItemDto itemdto);
     boolean addVasItemToItem(VasItemDto vasItemDto);
     boolean removeItemFromCart(int itemId);
-    List<Item> displayCart();
+    CartDisplayDto displayCart();
 
 }
 

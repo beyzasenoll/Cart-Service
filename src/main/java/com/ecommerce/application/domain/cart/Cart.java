@@ -1,52 +1,50 @@
 package com.ecommerce.application.domain.cart;
 
 import com.ecommerce.application.domain.item.Item;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
+@Data
 public class Cart {
-    private final List< Item> items;
-
-    public Cart(List<Item> items) {
-        this.items = items;
-    };
+    private final List<Item> items = new ArrayList<>();
+    private double totalPrice;
 
     public boolean addItem(Item item) {
         if (item != null) {
             items.add(item);
+            calculateTotalPrice(); // Toplam fiyatı güncelle
             return true;
         }
         return false;
     }
 
     public boolean removeItem(int itemId) {
-        return items.remove(itemId) != null;
-    }
-
-    public double getTotalPrice() {
-       double totalPrice=0;
-          for (Item item : items) {
-            totalPrice+=item.getTotalPrice();
+        boolean removed = items.removeIf(item -> item.getItemId() == itemId);
+        if (removed) {
+            calculateTotalPrice();
         }
-       return totalPrice;
+        return removed;
     }
 
-    public List <Item> getItems() {
-        return items; // Return a copy for protection
+    public List<Item> getItems() {
+        return new ArrayList<>(items);
     }
 
     public boolean clearCart() {
+        boolean wasEmpty = items.isEmpty();
         items.clear();
-        return true;
+        return !wasEmpty;
     }
 
-
-    public int getItemCount() {
-        return items.size();
+    private void calculateTotalPrice() {
+        totalPrice = items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
+    }
+    public int calculateTotalQuantity() {
+        return items.stream().mapToInt(Item::getQuantity).sum();
     }
 
     public boolean hasSameSellerItems() {
@@ -54,14 +52,12 @@ public class Cart {
             return false;
         }
 
-        String firstSeller = null;
-        for (Item item : items) {
-            if (firstSeller == null) {
-                firstSeller = String.valueOf(item.getSellerId());
-            } else if (!firstSeller.equals(item.getSellerId())) {
-                return false;
-            }
-        }
-        return true;
+        int firstSeller = items.get(0).getSellerId();
+        return items.stream().allMatch(item -> firstSeller == item.getSellerId());
+    }
+
+    public void applyDiscount(double discount) {
+        calculateTotalPrice();
+        totalPrice -= discount;
     }
 }

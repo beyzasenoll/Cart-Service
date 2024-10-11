@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+
 @Component
 public class CartValidator {
 
-    Logger logger = LoggerFactory.getLogger(CartValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(CartValidator.class);
     private static final int MAX_UNIQUE_ITEMS = 10;
     private static final int MAX_TOTAL_ITEMS = 30;
     private static final double MAX_TOTAL_PRICE = 500000;
@@ -18,21 +20,23 @@ public class CartValidator {
     public boolean isCartValid(Item item, Cart cart) {
         logger.info("Validating cart for item: {}", item);
 
-        int uniqueItemCount = 0;
-        int totalQuantity = 0;
-        double totalPrice = 0.0;
+        int totalQuantity = cart.calculateTotalQuantity();
+        double totalPrice = cart.getTotalPrice();
+        int uniqueItemCount = calculateUniqueItems(cart);
 
-        for (Item cartItem : cart.getItems()) {
-            if (!(cartItem instanceof VasItem)) {
-                uniqueItemCount++;
-            }
-            totalQuantity += cartItem.getQuantity();
-            totalPrice += cartItem.getPrice() * cartItem.getQuantity();
+        // Validate cart based on the defined constraints
+        if (uniqueItemCount >= MAX_UNIQUE_ITEMS) {
+            logger.error("Cart validation failed: too many unique items.");
+            return false;
         }
 
-        if (uniqueItemCount >= MAX_UNIQUE_ITEMS || totalQuantity + item.getQuantity() > MAX_TOTAL_ITEMS ||
-                totalPrice + (item.getPrice() * item.getQuantity()) > MAX_TOTAL_PRICE) {
-            logger.error("Cart validation failed.");
+        if (totalQuantity + item.getQuantity() > MAX_TOTAL_ITEMS) {
+            logger.error("Cart validation failed: total item count exceeds limit.");
+            return false;
+        }
+
+        if (totalPrice + (item.getTotalPrice()) > MAX_TOTAL_PRICE) {
+            logger.error("Cart validation failed: total price exceeds limit.");
             return false;
         }
 
@@ -40,21 +44,18 @@ public class CartValidator {
         return true;
     }
 
-    public Item findExistingItemInCart(Item item, Cart cart) {
+    private int calculateUniqueItems(Cart cart) {
+        HashSet<Integer> uniqueItems = new HashSet<>();
         for (Item cartItem : cart.getItems()) {
-            if (cartItem.getItemId() == item.getItemId()) {
-                return cartItem;
+            if (!(cartItem instanceof VasItem)) {
+                uniqueItems.add(cartItem.getItemId());
             }
         }
-        return null;
+        return uniqueItems.size();
     }
 
     public Item findItemInCart(int itemId, Cart cart) {
-        for (Item cartItem : cart.getItems()) {
-            if (cartItem.getItemId() == itemId) {
-                return cartItem;
-            }
-        }
-        return null;
+        return cart.getItems().stream().filter(cartItem -> cartItem.getItemId() == itemId).findFirst().orElse(null);
     }
 }
+

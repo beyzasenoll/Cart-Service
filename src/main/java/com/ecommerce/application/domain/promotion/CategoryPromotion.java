@@ -8,12 +8,17 @@ public class CategoryPromotion implements Promotion {
 
     @Override
     public double applyDiscount(Cart cart) {
+        if (!isApplicable(cart)) {
+            return 0;
+        }
+
         double discount = 0;
         for (Item item : cart.getItems()) {
-            if (isApplicable(cart)) {
+            if (item.getCategoryId() == 3003) {
                 discount += item.getTotalPrice() * 0.05; // %5 discount
             }
         }
+        cart.setTotalPrice(cart.getTotalPrice() - discount);
         return discount;
     }
 
@@ -22,13 +27,15 @@ public class CategoryPromotion implements Promotion {
         return ID;
     }
 
+    @Override
     public boolean isApplicable(Cart cart) {
         for (Item item : cart.getItems()) {
             if (item.getCategoryId() == 3003) {
-                return true; // At least one item with CategoryID 3003
+                return true;
             }
         }
         return false;
     }
 }
+
 

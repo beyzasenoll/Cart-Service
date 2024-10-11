@@ -1,4 +1,4 @@
-package com.ecommerce.application.domain;
+package com.ecommerce.application.domain.cart;
 
 import com.ecommerce.application.domain.item.Item;
 import org.springframework.stereotype.Component;

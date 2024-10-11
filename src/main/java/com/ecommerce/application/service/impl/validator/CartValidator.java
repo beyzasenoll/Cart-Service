@@ -1,6 +1,6 @@
-package com.ecommerce.application.service.impl;
+package com.ecommerce.application.service.impl.validator;
 
-import com.ecommerce.application.domain.Cart;
+import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
 import org.slf4j.Logger;

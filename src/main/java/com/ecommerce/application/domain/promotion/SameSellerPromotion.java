@@ -1,6 +1,6 @@
 package com.ecommerce.application.domain.promotion;
 
-import com.ecommerce.application.domain.Cart;
+import com.ecommerce.application.domain.cart.Cart;
 
 public class SameSellerPromotion implements Promotion {
     private static final int ID = 9909;

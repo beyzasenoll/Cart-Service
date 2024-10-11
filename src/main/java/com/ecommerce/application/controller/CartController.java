@@ -42,9 +42,9 @@ public class CartController {
         return ResponseEntity.ok(new ResponseDto(result, message));
     }
 
-   /*  @GetMapping("/displayCart")
+    @GetMapping("/displayCart")
     public ResponseEntity<ResponseDto> displayCart() {
-        CartDisplayDto displayInfo = cartService.displayCart();
+        CartDisplayDto displayInfo = (CartDisplayDto) cartService.displayCart();
         return ResponseEntity.ok(new ResponseDto(true, displayInfo));
-    } */
+    }
 }

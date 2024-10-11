@@ -1,6 +1,6 @@
 package com.ecommerce.application.service.impl;
 
-import com.ecommerce.application.domain.Cart;
+import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
@@ -46,13 +46,14 @@ public class VasItemServiceImpl implements VasItemService {
     private boolean findParentItem(int parentId, VasItem vasItem) {
         logger.info("Searching for parent item with ID: {}", parentId);
         for (Item item : cart.getItems()) {
+            logger.info("Item in cart: ID: {}, Type: {}", item.getItemId(), item.getClass().getSimpleName());
             if (item.getItemId() == parentId && item instanceof DefaultItem) {
                 DefaultItem defaultItem = (DefaultItem) item;
                 if (defaultItem.canAddVasItem()) {
                     logger.info("Parent item found and can accept VAS item. Parent ID: {}", parentId);
                     return true;
                 } else {
-                    logger.warn("Parent item found but cannot accept VAS item. Parent ID: {}", parentId);
+                    logger.error("Parent category ID should be 1001 or 3004 your category id is:  ", item.categoryId);
                 }
             }
         }

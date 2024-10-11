@@ -1,15 +1,19 @@
 package com.ecommerce.application.service.impl;
 
-import com.ecommerce.application.domain.Cart;
+import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.dto.ItemDto;
 import com.ecommerce.application.dto.VasItemDto;
 import com.ecommerce.application.mapper.ItemMapper;
 import com.ecommerce.application.service.CartService;
 import com.ecommerce.application.service.VasItemService;
+import com.ecommerce.application.service.impl.validator.CartValidator;
+import com.ecommerce.application.service.impl.validator.ItemValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -97,8 +101,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void displayCart() {
+    public List<Item> displayCart() {
         cart.getItems().forEach(item -> System.out.printf("Item ID: %d, Price: %.2f\n", item.getItemId(), item.getTotalPrice()));
+        return cart.getItems();
+
     }
 
     @Override

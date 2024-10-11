@@ -1,4 +1,4 @@
-package com.ecommerce.application.service.impl;
+package com.ecommerce.application.service.impl.validator;
 
 import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.DigitalItem;

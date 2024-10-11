@@ -1,6 +1,6 @@
 package com.ecommerce.application.domain.promotion;
 
-import com.ecommerce.application.domain.Cart;
+import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.Item;
 
 public class CategoryPromotion implements Promotion {

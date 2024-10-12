@@ -1,5 +1,8 @@
 package com.ecommerce.application.dto;
 
+import com.ecommerce.application.domain.item.Item;
+import com.ecommerce.application.dto.item.ItemRequestDto;
+import com.ecommerce.application.dto.item.ItemResponseDto;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,13 +15,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class CartDisplayDto {
-    private List<ItemDto> items;
+    private List<ItemResponseDto> items;
     private double totalPrice;
     private int appliedPromotionId;
     private double totalDiscount;
 
-    public CartDisplayDto(List<ItemDto> itemDtoList, double totalPrice, double bestDiscount, int bestPromotionId) {
-        this.items = itemDtoList;
+    public CartDisplayDto(List<ItemResponseDto> itemResponseDto, double totalPrice, double bestDiscount, int bestPromotionId) {
+        this.items = itemResponseDto;
         this.totalPrice = totalPrice;
         this.totalDiscount = bestDiscount;
         this.appliedPromotionId = bestPromotionId;

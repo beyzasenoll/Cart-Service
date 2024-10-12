@@ -1,7 +1,9 @@
 package com.ecommerce.application.domain.promotion;
 
 import com.ecommerce.application.domain.cart.Cart;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TotalPricePromotion implements Promotion {
     private static final int ID = 1232;
 

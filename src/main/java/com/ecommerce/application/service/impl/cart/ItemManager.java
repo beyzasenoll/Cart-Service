@@ -2,7 +2,7 @@ package com.ecommerce.application.service.impl.cart;
 
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.Item;
-import com.ecommerce.application.dto.ItemDto;
+import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.service.impl.validator.CartValidator;
 import com.ecommerce.application.service.impl.validator.ItemValidator;
 import org.slf4j.Logger;
@@ -22,9 +22,9 @@ public class ItemManager {
         this.itemValidator = itemValidator;
     }
 
-    public boolean isItemAddable(ItemDto itemDto, Item item) {
-        if (itemDto.getSellerId() == 5003) {
-            logger.error("Item cannot be added from seller with ID 5003: {}", itemDto);
+    public boolean isItemAddable(ItemRequestDto itemRequestDto, Item item) {
+        if (itemRequestDto.getSellerId() == 5003) {
+            logger.error("Item cannot be added from seller with ID 5003: {}", itemRequestDto);
             return false;
         }
 

@@ -2,31 +2,29 @@ package com.ecommerce.application.mapper;
 
 
 import com.ecommerce.application.domain.item.VasItem;
-import com.ecommerce.application.dto.VasItemDto;
+import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
+import com.ecommerce.application.dto.vasItem.VasItemResponseDto;
+import org.springframework.stereotype.Component;
+
+@Component
 
 public class VasItemMapper {
 
-    public static VasItem toVasItem(VasItemDto vasItemDto) {
-        if (vasItemDto == null) {
+    public static VasItem toVasItem(VasItemRequestDto vasItemRequestDto) {
+        if (vasItemRequestDto == null) {
             return null;
         }
-        return new VasItem(vasItemDto.getVasItemId(), vasItemDto.getPrice(), vasItemDto.getQuantity());
+        return new VasItem(vasItemRequestDto.getVasItemId(), vasItemRequestDto.getPrice(), vasItemRequestDto.getQuantity());
     }
 
-    public static VasItemDto toVasItemDto(VasItem VasItem) {
-        if (VasItem == null) {
-            return null;
-        }
-
-        VasItemDto dto = new VasItemDto();
-        dto.setItemId(VasItem.getItemId());
-        dto.setVasItemId(VasItem.getItemId());
-        dto.setCategoryId(VasItem.getCategoryId());
-        dto.setSellerId(VasItem.getSellerId());
-        dto.setPrice(VasItem.getPrice());
-        dto.setQuantity(VasItem.getQuantity());
-
-        return dto;
+    public static VasItemResponseDto toResponseDto(VasItem vasItem) {
+        VasItemResponseDto responseDto = new VasItemResponseDto();
+        responseDto.setVasItemId(vasItem.getItemId());
+        responseDto.setCategoryId(vasItem.getCategoryId());
+        responseDto.setSellerId(vasItem.getSellerId());
+        responseDto.setPrice(vasItem.getPrice());
+        responseDto.setQuantity(vasItem.getQuantity());
+        return responseDto;
     }
 }
 

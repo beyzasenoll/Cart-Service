@@ -1,6 +1,7 @@
 package com.ecommerce.application.service.impl.validator;
 
 import com.ecommerce.application.domain.cart.Cart;
+import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
 import org.slf4j.Logger;
@@ -55,7 +56,23 @@ public class CartValidator {
     }
 
     public Item findItemInCart(int itemId, Cart cart) {
-        return cart.getItems().stream().filter(cartItem -> cartItem.getItemId() == itemId).findFirst().orElse(null);
+        for (Item cartItem : cart.getItems()) {
+            if (cartItem.getItemId() == itemId) {
+                return cartItem;
+            }
+
+            if (cartItem instanceof DefaultItem) {
+                DefaultItem defaultItem = (DefaultItem) cartItem;
+
+                for (VasItem vasItem : defaultItem.getVasItems()) {
+                    if (vasItem.getItemId() == itemId) {
+                        return vasItem;
+                    }
+                }
+            }
+        }
+        return null;
     }
+
 }
 

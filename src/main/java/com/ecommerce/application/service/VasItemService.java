@@ -1,8 +1,8 @@
 package com.ecommerce.application.service;
 
-import com.ecommerce.application.dto.VasItemDto;
+import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
 
 public interface VasItemService {
 
-    boolean addVasItemToItem(VasItemDto vasItemDto);
+    boolean addVasItemToItem(VasItemRequestDto vasItemRequestDto);
 }

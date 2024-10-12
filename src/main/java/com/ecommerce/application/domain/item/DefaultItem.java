@@ -1,8 +1,14 @@
 package com.ecommerce.application.domain.item;
 
-public class DefaultItem extends Item {
+import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+public class DefaultItem extends Item {
     private static final int MAX_QUANTITY = 10;
+    private List<VasItem> vasItems = new ArrayList<>();
 
     public DefaultItem(int itemId, int categoryId, int sellerId, double price, int quantity) {
         super(itemId, categoryId, sellerId, price, quantity);
@@ -20,5 +26,13 @@ public class DefaultItem extends Item {
 
     public boolean canAddVasItem() {
         return (getCategoryId() == 1001 || getCategoryId() == 3004); // Mobilya veya Elektronik
+    }
+
+    public boolean addVasItem(VasItem vasItem) {
+        if (vasItem != null) {
+            vasItems.add(vasItem);
+            return true;
+        }
+        return false;
     }
 }

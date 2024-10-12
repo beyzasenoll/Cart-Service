@@ -3,8 +3,8 @@ package com.ecommerce.application.service.impl.cart;
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.dto.CartDisplayDto;
-import com.ecommerce.application.dto.ItemDto;
-import com.ecommerce.application.dto.PromotionDto;
+import com.ecommerce.application.dto.item.ItemRequestDto;
+import com.ecommerce.application.dto.item.ItemResponseDto;
 import com.ecommerce.application.mapper.ItemMapper;
 import com.ecommerce.application.service.PromotionService;
 import com.ecommerce.application.service.impl.validator.CartValidator;
@@ -37,11 +37,11 @@ public class CartManager {
         this.itemManager = itemManager;
     }
 
-    public boolean addItemToCart(ItemDto itemDto) {
-        logger.info("Adding item to cart: {}", itemDto);
-        Item item = itemMapper.updateItemFromDto(itemDto);
+    public boolean addItemToCart(ItemRequestDto itemRequestDto) {
+        logger.info("Adding item to cart: {}", itemRequestDto);
+        Item item = itemMapper.updateItemFromDto(itemRequestDto);
 
-        if (!itemManager.isItemAddable(itemDto, item)) {
+        if (!itemManager.isItemAddable(itemRequestDto, item)) {
             return false;
         }
 
@@ -84,14 +84,14 @@ public class CartManager {
     }
 
     public CartDisplayDto displayCart() {
-        List<ItemDto> itemDtoList = cart.getItems().stream()
+       List<ItemResponseDto> itemResponseDtoList = cart.getItems().stream()
                 .map(itemMapper::toItemDto)
                 .collect(Collectors.toList());
 
         double bestDiscount = promotionService.applyBestPromotion(cart);
         int bestPromotionId = promotionService.getBestPromotionId(cart);
 
-        return new CartDisplayDto(itemDtoList, cart.getTotalPrice(), bestDiscount, bestPromotionId);
+        return new CartDisplayDto(itemResponseDtoList, cart.getTotalPrice(), bestDiscount, bestPromotionId);
     }
 
     public boolean resetCart() {

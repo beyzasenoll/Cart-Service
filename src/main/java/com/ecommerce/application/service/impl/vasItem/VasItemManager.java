@@ -4,7 +4,7 @@ import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
-import com.ecommerce.application.dto.VasItemDto;
+import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
 import com.ecommerce.application.mapper.VasItemMapper;
 import com.ecommerce.application.service.impl.cart.ItemManager;
 import org.slf4j.Logger;
@@ -22,19 +22,19 @@ public class VasItemManager {
         this.itemManager = itemManager;
     }
 
-    public boolean addVasItemToItem(VasItemDto vasItemDto) {
-        logger.info("Attempting to add VAS item to cart: {}", vasItemDto);
+    public boolean addVasItemToItem(VasItemRequestDto vasItemRequestDto) {
+        logger.info("Attempting to add VAS item to cart: {}", vasItemRequestDto);
 
-        validateSellerId(vasItemDto.getSellerId());
+        validateSellerId(vasItemRequestDto.getSellerId());
 
-        VasItem vasItem = VasItemMapper.toVasItem(vasItemDto);
-        boolean isParentFound = findParentItem(vasItemDto.getItemId(), vasItem);
+        VasItem vasItem = VasItemMapper.toVasItem(vasItemRequestDto);
+        DefaultItem parentItem = findParentItem(vasItemRequestDto.getItemId());
 
-        if (isParentFound && addItemToCart(vasItem, vasItemDto.getVasItemId())) {
-            return true;
+        if (parentItem != null) {
+            return addVasItem(vasItem, parentItem);
         }
 
-        logger.warn("Parent item not found or cannot add VAS item. Parent ID: {}", vasItemDto.getItemId());
+        logger.warn("Parent item not found or cannot add VAS item. Parent ID: {}", vasItemRequestDto.getItemId());
         return false;
     }
 
@@ -45,32 +45,30 @@ public class VasItemManager {
         }
     }
 
-    private boolean addItemToCart(VasItem vasItem, int itemId) {
-        if (itemManager.updateExistingItemQuantity(vasItem, cart)) {
-            cart.addItem(vasItem);
-            logger.info("VAS item added to parent item with ID: {}", itemId);
-            return true;
+    private boolean addVasItem(VasItem vasItem, DefaultItem parentItem) {
+        if (vasItem != null && parentItem.canAddVasItem()) {
+
+            if (!itemManager.updateExistingItemQuantity(vasItem, cart)) {
+                return false;
+            }
+            if (parentItem.addVasItem(vasItem)) {
+                cart.calculateTotalPrice(); // Recalculate total price
+                logger.info("VAS item added to parent item with ID: {}", parentItem.getItemId());
+                return true;
+            }
         }
         return false;
     }
-
-
-    private boolean findParentItem(int parentId, VasItem vasItem) {
+    private DefaultItem findParentItem(int parentId) {
         logger.info("Searching for parent item with ID: {}", parentId);
         for (Item item : cart.getItems()) {
-            logger.info("Item in cart: ID: {}, Type: {}", item.getItemId(), item.getClass().getSimpleName());
             if (item.getItemId() == parentId && item instanceof DefaultItem) {
-                DefaultItem defaultItem = (DefaultItem) item;
-                if (defaultItem.canAddVasItem()) {
-                    logger.info("Parent item found and can accept VAS item. Parent ID: {}", parentId);
-                    return true;
-                } else {
-                    logger.error("Parent category ID should be 1001 or 3004 your category id is: {}", item.getCategoryId());
-                }
+                return (DefaultItem) item; // Return found parent item
             }
         }
 
         logger.warn("Parent item with ID {} not found in cart.", parentId);
-        return false;
+        return null;
     }
 }
+

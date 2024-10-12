@@ -2,9 +2,9 @@ package com.ecommerce.controller;
 
 import com.ecommerce.application.controller.CartController;
 import com.ecommerce.application.dto.CartDisplayDto;
-import com.ecommerce.application.dto.ItemDto;
+import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.dto.ResponseDto;
-import com.ecommerce.application.dto.VasItemDto;
+import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
 import com.ecommerce.application.service.CartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,10 +32,10 @@ public class CartControllerTest {
 
     @Test
     public void testAddItem() {
-        ItemDto itemDto = new ItemDto(); // Initialize as necessary
-        when(cartService.addItemToCart(any(ItemDto.class))).thenReturn(true);
+        ItemRequestDto itemRequestDto = new ItemRequestDto(); // Initialize as necessary
+        when(cartService.addItemToCart(any(ItemRequestDto.class))).thenReturn(true);
 
-        ResponseEntity<ResponseDto> response = cartController.addItem(itemDto);
+        ResponseEntity<ResponseDto> response = cartController.addItem(itemRequestDto);
 
         assertEquals(200, response.getStatusCodeValue());
         assertTrue(response.getBody().isResult()); // Accessing the field directly
@@ -44,10 +44,10 @@ public class CartControllerTest {
 
     @Test
     public void testAddVasItemToItem() {
-        VasItemDto vasItemDto = new VasItemDto(); // Initialize as necessary
-        when(cartService.addVasItemToItem(any(VasItemDto.class))).thenReturn(true);
+        VasItemRequestDto vasItemRequestDto = new VasItemRequestDto(); // Initialize as necessary
+        when(cartService.addVasItemToItem(any(VasItemRequestDto.class))).thenReturn(true);
 
-        ResponseEntity<ResponseDto> response = cartController.addVasItemToItem(vasItemDto);
+        ResponseEntity<ResponseDto> response = cartController.addVasItemToItem(vasItemRequestDto);
 
         assertEquals(200, response.getStatusCodeValue());
         assertTrue(response.getBody().isResult()); // Accessing the field directly

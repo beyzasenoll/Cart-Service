@@ -1,6 +1,8 @@
 package com.ecommerce.application.domain.cart;
 
+import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.Item;
+import com.ecommerce.application.domain.item.VasItem;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -40,9 +42,10 @@ public class Cart {
         return !wasEmpty;
     }
 
-    private void calculateTotalPrice() {
-        totalPrice = items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
+    public void calculateTotalPrice() {
+        totalPrice = items.stream().mapToDouble(item -> item.getTotalPrice()).sum();
     }
+
     public int calculateTotalQuantity() {
         return items.stream().mapToInt(Item::getQuantity).sum();
     }

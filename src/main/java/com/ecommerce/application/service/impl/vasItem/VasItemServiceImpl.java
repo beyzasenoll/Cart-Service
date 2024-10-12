@@ -1,6 +1,6 @@
 package com.ecommerce.application.service.impl.vasItem;
 
-import com.ecommerce.application.dto.VasItemDto;
+import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
 import com.ecommerce.application.service.VasItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,8 @@ public class VasItemServiceImpl implements VasItemService {
     }
 
     @Override
-    public boolean addVasItemToItem(VasItemDto vasItemDto) {
+    public boolean addVasItemToItem(VasItemRequestDto vasItemRequestDto) {
         logger.info("Delegating the VAS item addition to manager.");
-        return vasItemManager.addVasItemToItem(vasItemDto);
+        return vasItemManager.addVasItemToItem(vasItemRequestDto);
     }
 }

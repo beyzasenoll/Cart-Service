@@ -16,7 +16,7 @@ public class Cart {
     public boolean addItem(Item item) {
         if (item != null) {
             items.add(item);
-            calculateTotalPrice(); // Toplam fiyatı güncelle
+            calculateTotalPrice();
             return true;
         }
         return false;

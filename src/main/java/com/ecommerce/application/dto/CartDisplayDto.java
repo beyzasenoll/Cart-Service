@@ -18,5 +18,10 @@ public class CartDisplayDto {
     private double totalDiscount;
 
     public CartDisplayDto(List<ItemDto> itemDtoList, double totalPrice, double bestDiscount, int bestPromotionId) {
+        this.items = itemDtoList;
+        this.totalPrice = totalPrice;
+        this.totalDiscount = bestDiscount;
+        this.appliedPromotionId = bestPromotionId;
     }
+
 }

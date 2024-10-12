@@ -93,6 +93,7 @@ public class CartManager {
 
         return new CartDisplayDto(itemDtoList, cart.getTotalPrice(), bestDiscount, bestPromotionId);
     }
+
     public boolean resetCart() {
         boolean isCleared = cart.clearCart();
         logger.info(isCleared ? "Cart reset successfully." : "Failed to reset cart.");

@@ -10,7 +10,7 @@ public class VasItemMapper {
         if (vasItemDto == null) {
             return null;
         }
-        return new VasItem(vasItemDto.getVasItemId(), vasItemDto.getCategoryId(), vasItemDto.getPrice(), vasItemDto.getQuantity());
+        return new VasItem(vasItemDto.getVasItemId(), vasItemDto.getPrice(), vasItemDto.getQuantity());
     }
 
     public static VasItemDto toVasItemDto(VasItem VasItem) {

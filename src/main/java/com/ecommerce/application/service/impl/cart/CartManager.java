@@ -46,7 +46,7 @@ public class CartManager {
         }
 
         if (!itemManager.updateExistingItemQuantity(item, cart)) {
-            return true;
+            return false;
         }
 
         if (!cartValidator.isCartValid(item, cart)) {

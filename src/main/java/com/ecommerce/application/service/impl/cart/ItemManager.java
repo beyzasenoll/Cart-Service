@@ -23,13 +23,11 @@ public class ItemManager {
     }
 
     public boolean isItemAddable(ItemDto itemDto, Item item) {
-        // Check seller restriction
         if (itemDto.getSellerId() == 5003) {
             logger.error("Item cannot be added from seller with ID 5003: {}", itemDto);
             return false;
         }
 
-        // Validate the item
         if (!itemValidator.isValidItem(item)) {
             logger.error("Invalid item: {}", item);
             return false;
@@ -40,16 +38,30 @@ public class ItemManager {
     public boolean updateExistingItemQuantity(Item item, Cart cart) {
         Item existingItem = cartValidator.findItemInCart(item.getItemId(), cart);
 
-        if (existingItem != null) {
-            int newQuantity = existingItem.getQuantity() + item.getQuantity();
-            if (existingItem.isValidQuantity(newQuantity)) {
-                logger.error("Cannot add more the same item. Current quantity: {}", newQuantity);
-                return false;
-            }
-            existingItem.setQuantity(newQuantity);
-            logger.info("Quantity updated for item: {}", existingItem);
+        if (existingItem == null) {
             return true;
         }
-        return false;
+
+        if (hasDifferentAttributes(existingItem, item)) {
+            logger.error("Cannot add item with the same itemId but different attributes. ItemId: {}", item.getItemId());
+            return false;
+        }
+
+        int newQuantity = existingItem.getQuantity() + item.getQuantity();
+        if (!existingItem.isValidQuantity(newQuantity)) {
+            logger.error("Cannot add more of the same item. Current quantity: {}", newQuantity);
+            return false;
+        }
+
+        existingItem.setQuantity(newQuantity);
+        logger.info("Quantity updated for item: {}", existingItem);
+        return true;
     }
+
+    private boolean hasDifferentAttributes(Item existingItem, Item newItem) {
+        return existingItem.getCategoryId() != newItem.getCategoryId() ||
+                existingItem.getSellerId() != newItem.getSellerId() ||
+                Double.compare(existingItem.getPrice(), newItem.getPrice()) != 0;
+    }
+
 }

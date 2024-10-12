@@ -15,7 +15,7 @@ public class ItemFactoryImpl implements ItemFactory {
         if (categoryId == 7889) {
             return new DigitalItem(itemId, sellerId, price, quantity);
         } else if (categoryId == 3242) {
-            return new VasItem(itemId, categoryId, price, quantity);
+            return new VasItem(itemId, price, quantity);
         } else {
             return new DefaultItem(itemId, categoryId, sellerId, price, quantity);
         }

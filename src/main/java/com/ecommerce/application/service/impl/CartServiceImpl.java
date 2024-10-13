@@ -124,7 +124,6 @@ public class CartServiceImpl implements CartService {
         double totalPrice = cart.getTotalPrice();
         int uniqueItemCount = cart.calculateUniqueItems(cart);
 
-        // Validate cart based on the defined constraints
         if (uniqueItemCount >= MAX_UNIQUE_ITEMS) {
             logger.error("Cart validation failed: too many unique items.");
             return false;

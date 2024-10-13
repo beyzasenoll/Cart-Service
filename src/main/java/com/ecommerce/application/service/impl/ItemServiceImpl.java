@@ -1,45 +1,43 @@
-package com.ecommerce.application.service.impl.cart;
+package com.ecommerce.application.service.impl;
 
 import com.ecommerce.application.domain.cart.Cart;
+import com.ecommerce.application.domain.item.DefaultItem;
+import com.ecommerce.application.domain.item.DigitalItem;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.dto.item.ItemRequestDto;
-import com.ecommerce.application.service.impl.validator.CartValidator;
-import com.ecommerce.application.service.impl.validator.ItemValidator;
+import com.ecommerce.application.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ItemManager {
+public class ItemServiceImpl implements ItemService {
 
-    private final Logger logger = LoggerFactory.getLogger(ItemManager.class);
-    private final CartValidator cartValidator;
-    private final ItemValidator itemValidator;
+    private final Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
 
 
-    public ItemManager(CartValidator cartValidator, ItemValidator itemValidator) {
-        this.cartValidator = cartValidator;
-        this.itemValidator = itemValidator;
+    public ItemServiceImpl() {
     }
-
+    @Override
     public boolean isItemAddable(ItemRequestDto itemRequestDto, Item item) {
         if (itemRequestDto.getSellerId() == 5003) {
             logger.error("Item cannot be added from seller with ID 5003: {}", itemRequestDto);
             return false;
         }
 
-        if (!itemValidator.isValidItem(item)) {
+        if (!isValidItem(item)) {
             logger.error("Invalid item: {}", item);
             return false;
         }
         return true;
     }
 
+    @Override
     public boolean updateExistingItemQuantity(Item item, Cart cart) {
-        Item existingItem = cartValidator.findItemInCart(item.getItemId(), cart);
+        Item existingItem = cart.findItemInCart(item.getItemId(), cart);
 
         if (existingItem == null) {
-            return true;
+            return false;
         }
 
         if (hasDifferentAttributes(existingItem, item)) {
@@ -48,20 +46,41 @@ public class ItemManager {
         }
 
         int newQuantity = existingItem.getQuantity() + item.getQuantity();
+
         if (!existingItem.isValidQuantity(newQuantity)) {
             logger.error("Cannot add more of the same item. Current quantity: {}", newQuantity);
-            return false;
+            return false; // Yeni miktar geçerli değilse, false döndür
         }
 
+        // Mevcut item'ın miktarını güncelle
         existingItem.setQuantity(newQuantity);
         logger.info("Quantity updated for item: {}", existingItem);
         return true;
     }
 
-    private boolean hasDifferentAttributes(Item existingItem, Item newItem) {
+    @Override
+    public boolean hasDifferentAttributes(Item existingItem, Item newItem) {
         return existingItem.getCategoryId() != newItem.getCategoryId() ||
                 existingItem.getSellerId() != newItem.getSellerId() ||
                 Double.compare(existingItem.getPrice(), newItem.getPrice()) != 0;
+    }
+
+    @Override
+    public boolean isValidItem(Item item) {
+        logger.info("Validating item: {}", item);
+
+        if (item instanceof DigitalItem) {
+            boolean isValid = ((DigitalItem) item).isValidQuantity(item.getQuantity());
+            logger.info("Digital item validation result: {}", isValid);
+            return isValid;
+        } else if (item instanceof DefaultItem) {
+            boolean isValid = ((DefaultItem) item).isValidQuantity(item.getQuantity());
+            logger.info("Default item validation result: {}", isValid);
+            return isValid;
+        }
+
+        logger.warn("Invalid item type: {}", item);
+        return false;
     }
 
 }

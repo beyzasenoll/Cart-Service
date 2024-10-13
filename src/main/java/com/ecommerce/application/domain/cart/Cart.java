@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -62,5 +63,33 @@ public class Cart {
     public void applyDiscount(double discount) {
         calculateTotalPrice();
         totalPrice -= discount;
+    }
+
+    public int calculateUniqueItems(Cart cart) {
+        HashSet<Integer> uniqueItems = new HashSet<>();
+        for (Item cartItem : cart.getItems()) {
+            if (!(cartItem instanceof VasItem)) {
+                uniqueItems.add(cartItem.getItemId());
+            }
+        }
+        return uniqueItems.size();
+    }
+    public Item findItemInCart(int itemId, Cart cart) {
+        for (Item cartItem : cart.getItems()) {
+            if (cartItem.getItemId() == itemId) {
+                return cartItem;
+            }
+
+            if (cartItem instanceof DefaultItem) {
+                DefaultItem defaultItem = (DefaultItem) cartItem;
+
+                for (VasItem vasItem : defaultItem.getVasItems()) {
+                    if (vasItem.getItemId() == itemId) {
+                        return vasItem;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

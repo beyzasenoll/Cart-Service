@@ -1,4 +1,4 @@
-package com.ecommerce.application.service.impl.vasItem;
+package com.ecommerce.application.service.impl;
 
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.DefaultItem;
@@ -6,22 +6,26 @@ import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
 import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
 import com.ecommerce.application.mapper.VasItemMapper;
-import com.ecommerce.application.service.impl.cart.ItemManager;
+import com.ecommerce.application.service.VasItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class VasItemManager {
-    Logger logger = LoggerFactory.getLogger(VasItemManager.class);
+@Service
+public class VasItemServiceImpl implements VasItemService {
+    Logger logger = LoggerFactory.getLogger(VasItemServiceImpl.class);
+    private final VasItemServiceImpl vasItemServiceImpl;
+    private final ItemServiceImpl itemServiceImpl;
     private final Cart cart;
-    private final ItemManager itemManager;
 
-    public VasItemManager(Cart cart, ItemManager itemManager) {
+    public VasItemServiceImpl(VasItemServiceImpl vasItemServiceImpl, ItemServiceImpl itemServiceImpl, Cart cart) {
+
+        this.vasItemServiceImpl = vasItemServiceImpl;
+        this.itemServiceImpl = itemServiceImpl;
         this.cart = cart;
-        this.itemManager = itemManager;
     }
 
+    @Override
     public boolean addVasItemToItem(VasItemRequestDto vasItemRequestDto) {
         logger.info("Attempting to add VAS item to cart: {}", vasItemRequestDto);
 
@@ -48,7 +52,7 @@ public class VasItemManager {
     private boolean addVasItem(VasItem vasItem, DefaultItem parentItem) {
         if (vasItem != null && parentItem.canAddVasItem()) {
 
-            if (!itemManager.updateExistingItemQuantity(vasItem, cart)) {
+            if (!itemServiceImpl.updateExistingItemQuantity(vasItem, cart)) {
                 return false;
             }
             if (parentItem.addVasItem(vasItem)) {
@@ -71,4 +75,3 @@ public class VasItemManager {
         return null;
     }
 }
-

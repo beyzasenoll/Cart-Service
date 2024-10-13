@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 public class DefaultItem extends Item {
     private static final int MAX_QUANTITY = 10;
-    private List<VasItem> vasItems = new ArrayList<>();
+    private final List<VasItem> vasItems = new ArrayList<>();
 
     public DefaultItem(int itemId, int categoryId, int sellerId, double price, int quantity) {
         super(itemId, categoryId, sellerId, price, quantity);
@@ -32,7 +32,10 @@ public class DefaultItem extends Item {
         for (VasItem vasItem : vasItems) {
             if (vasItem.getItemId() == newVasItem.getItemId()) {
                 int newQuantity = vasItem.getQuantity() + newVasItem.getQuantity();
-                if (isValidQuantity(newQuantity)) {
+                if (!vasItem.isValidQuantity(newQuantity)) {
+                    return false;
+                }
+                else{
                     vasItem.setQuantity(newQuantity);
                     return true;
                 }

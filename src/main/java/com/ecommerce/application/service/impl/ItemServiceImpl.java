@@ -37,25 +37,26 @@ public class ItemServiceImpl implements ItemService {
         Item existingItem = cart.findItemInCart(item.getItemId(), cart);
 
         if (existingItem == null) {
-            return false;
+            return false; // Eğer item sepette yoksa false döndür
         }
 
         if (hasDifferentAttributes(existingItem, item)) {
             logger.error("Cannot add item with the same itemId but different attributes. ItemId: {}", item.getItemId());
-            return false;
+            return false; // Farklı özelliklere sahip item varsa false döndür
         }
 
+        // Yeni miktarı hesapla
         int newQuantity = existingItem.getQuantity() + item.getQuantity();
 
+        // Yeni miktarın geçerliliğini kontrol et
         if (!existingItem.isValidQuantity(newQuantity)) {
-            logger.error("Cannot add more of the same item. Current quantity: {}", newQuantity);
-            return false; // Yeni miktar geçerli değilse, false döndür
+            logger.error("Cannot update item: quantity exceeds maximum limit. New quantity: {}", newQuantity);
+            return false; // Eğer yeni miktar geçerli değilse false döndür
         }
 
-        // Mevcut item'ın miktarını güncelle
-        existingItem.setQuantity(newQuantity);
+        existingItem.setQuantity(newQuantity); // Miktarı güncelle
         logger.info("Quantity updated for item: {}", existingItem);
-        return true;
+        return true; // Miktar başarılı bir şekilde güncellendi
     }
 
     @Override
@@ -82,5 +83,4 @@ public class ItemServiceImpl implements ItemService {
         logger.warn("Invalid item type: {}", item);
         return false;
     }
-
 }

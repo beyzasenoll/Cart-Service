@@ -14,14 +14,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class VasItemServiceImpl implements VasItemService {
     Logger logger = LoggerFactory.getLogger(VasItemServiceImpl.class);
-    private final VasItemServiceImpl vasItemServiceImpl;
-    private final ItemServiceImpl itemServiceImpl;
     private final Cart cart;
 
-    public VasItemServiceImpl(VasItemServiceImpl vasItemServiceImpl, ItemServiceImpl itemServiceImpl, Cart cart) {
-
-        this.vasItemServiceImpl = vasItemServiceImpl;
-        this.itemServiceImpl = itemServiceImpl;
+    public VasItemServiceImpl(ItemServiceImpl itemServiceImpl, Cart cart) {
         this.cart = cart;
     }
 
@@ -51,18 +46,15 @@ public class VasItemServiceImpl implements VasItemService {
 
     private boolean addVasItem(VasItem vasItem, DefaultItem parentItem) {
         if (vasItem != null && parentItem.canAddVasItem()) {
-
-            if (!itemServiceImpl.updateExistingItemQuantity(vasItem, cart)) {
-                return false;
-            }
-            if (parentItem.addVasItem(vasItem)) {
-                cart.calculateTotalPrice(); // Recalculate total price
-                logger.info("VAS item added to parent item with ID: {}", parentItem.getItemId());
+            if (parentItem.addOrUpdateVasItem(vasItem)) {
+                cart.calculateTotalPrice();
+                logger.info("VAS item added/updated to parent item with ID: {}", parentItem.getItemId());
                 return true;
             }
         }
         return false;
     }
+
     private DefaultItem findParentItem(int parentId) {
         logger.info("Searching for parent item with ID: {}", parentId);
         for (Item item : cart.getItems()) {

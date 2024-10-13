@@ -74,20 +74,11 @@ public class Cart {
         }
         return uniqueItems.size();
     }
+
     public Item findItemInCart(int itemId, Cart cart) {
         for (Item cartItem : cart.getItems()) {
             if (cartItem.getItemId() == itemId) {
                 return cartItem;
-            }
-
-            if (cartItem instanceof DefaultItem) {
-                DefaultItem defaultItem = (DefaultItem) cartItem;
-
-                for (VasItem vasItem : defaultItem.getVasItems()) {
-                    if (vasItem.getItemId() == itemId) {
-                        return vasItem;
-                    }
-                }
             }
         }
         return null;

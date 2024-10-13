@@ -28,11 +28,16 @@ public class DefaultItem extends Item {
         return (getCategoryId() == 1001 || getCategoryId() == 3004); // Mobilya veya Elektronik
     }
 
-    public boolean addVasItem(VasItem vasItem) {
-        if (vasItem != null) {
-            vasItems.add(vasItem);
-            return true;
+    public boolean addOrUpdateVasItem(VasItem newVasItem) {
+        for (VasItem vasItem : vasItems) {
+            if (vasItem.getItemId() == newVasItem.getItemId()) {
+                int newQuantity = vasItem.getQuantity() + newVasItem.getQuantity();
+                if (isValidQuantity(newQuantity)) {
+                    vasItem.setQuantity(newQuantity);
+                    return true;
+                }
+            }
         }
-        return false;
+        return vasItems.add(newVasItem);
     }
 }

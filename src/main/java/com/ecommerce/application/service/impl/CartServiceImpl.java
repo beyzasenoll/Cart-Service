@@ -45,32 +45,33 @@ public class CartServiceImpl implements CartService {
         logger.info("Adding item to cart: {}", itemRequestDto);
         Item item = itemMapper.updateItemFromDto(itemRequestDto);
 
-        // Mevcut ürünü güncelleyip güncellemeye çalış
         if (itemServiceImpl.updateExistingItemQuantity(item, cart)) {
             logger.info("Quantity updated for item in cart: {}", item);
-            return true; // Eğer miktar güncellendiyse, true döndür
+            return true;
         } else {
-            // Yeni item eklemeden önce geçerlilik kontrolleri yap
             if (!itemServiceImpl.isItemAddable(itemRequestDto, item)) {
-                return false; // Eğer item eklenemiyorsa, false döndür
+                return false;
             }
 
-            if (!isCartValid(item, cart)) {
-                logger.error("Cart validation failed for item: {}", item);
-                return false; // Eğer sepet geçerli değilse, false döndür
-            }
+            Item existingItem = cart.findItemInCart(item.getItemId(), cart);
+            if (existingItem != null) {
+                int newQuantity = existingItem.getQuantity() + item.getQuantity();
 
-            // Yeni item'ı sepete ekle
+                if (!existingItem.isValidQuantity(newQuantity)) {
+                    logger.error("Cannot add item: quantity exceeds maximum limit. New quantity: {}", newQuantity);
+                    return false;
+                }
+            }
             boolean isAdded = cart.addItem(item);
             if (isAdded) {
                 logger.info("Item added to cart: {}", item);
                 double discount = promotionService.applyBestPromotion(cart);
-                cart.applyDiscount(discount); // Uygun indirimleri uygula
+                cart.applyDiscount(discount);
             } else {
                 logger.error("Failed to add item: {}", item);
             }
 
-            return isAdded; // Yeni item ekleme sonucunu döndür
+            return isAdded;
         }
     }
 

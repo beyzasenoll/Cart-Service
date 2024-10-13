@@ -11,5 +11,6 @@ public interface ItemService {
     boolean updateExistingItemQuantity(Item item, Cart cart);
 
     boolean hasDifferentAttributes(Item existingItem, Item newItem);
+
     boolean isValidItem(Item item);
 }

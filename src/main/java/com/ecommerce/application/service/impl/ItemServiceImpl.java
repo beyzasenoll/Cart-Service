@@ -18,6 +18,7 @@ public class ItemServiceImpl implements ItemService {
 
     public ItemServiceImpl() {
     }
+
     @Override
     public boolean isItemAddable(ItemRequestDto itemRequestDto, Item item) {
         if (itemRequestDto.getSellerId() == 5003) {

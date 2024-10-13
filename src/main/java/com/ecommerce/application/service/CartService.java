@@ -10,8 +10,11 @@ public interface CartService {
     boolean resetCart();
 
     boolean addItemToCart(ItemRequestDto itemRequestDto);
+
     boolean addVasItemToItem(VasItemRequestDto vasItemRequestDto);
+
     boolean removeItemFromCart(int itemId);
+
     CartDisplayDto displayCart();
 
 }

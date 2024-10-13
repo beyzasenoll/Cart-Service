@@ -2,7 +2,6 @@ package com.ecommerce.application.domain.promotion;
 
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.Item;
-
 import org.springframework.stereotype.Component;
 
 @Component

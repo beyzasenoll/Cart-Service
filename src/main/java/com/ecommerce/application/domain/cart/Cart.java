@@ -1,6 +1,5 @@
 package com.ecommerce.application.domain.cart;
 
-import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
 import lombok.Data;

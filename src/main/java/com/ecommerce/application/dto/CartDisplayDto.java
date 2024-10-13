@@ -1,7 +1,5 @@
 package com.ecommerce.application.dto;
 
-import com.ecommerce.application.domain.item.Item;
-import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.dto.item.ItemResponseDto;
 import lombok.Data;
 import lombok.Getter;

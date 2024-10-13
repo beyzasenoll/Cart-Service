@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VasItemServiceImpl implements VasItemService {
-    Logger logger = LoggerFactory.getLogger(VasItemServiceImpl.class);
     private final Cart cart;
+    Logger logger = LoggerFactory.getLogger(VasItemServiceImpl.class);
 
     public VasItemServiceImpl(ItemServiceImpl itemServiceImpl, Cart cart) {
         this.cart = cart;

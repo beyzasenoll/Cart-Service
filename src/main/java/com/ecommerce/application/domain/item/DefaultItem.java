@@ -34,8 +34,7 @@ public class DefaultItem extends Item {
                 int newQuantity = vasItem.getQuantity() + newVasItem.getQuantity();
                 if (!vasItem.isValidQuantity(newQuantity)) {
                     return false;
-                }
-                else{
+                } else {
                     vasItem.setQuantity(newQuantity);
                     return true;
                 }

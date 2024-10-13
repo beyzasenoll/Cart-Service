@@ -116,6 +116,7 @@ public class CartServiceImpl implements CartService {
 
         return isRemoved;
     }
+
     public boolean isCartValid(Item item, Cart cart) {
         logger.info("Validating cart for item: {}", item);
 

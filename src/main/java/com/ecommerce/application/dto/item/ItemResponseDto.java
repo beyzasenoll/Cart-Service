@@ -16,6 +16,7 @@ public class ItemResponseDto {
     public void addVasItem(VasItemResponseDto VasItemResponseDto) {
         vasItems.add(VasItemResponseDto);
     }
+
     public List<VasItemResponseDto> getVasItems() {
         return vasItems;
     }

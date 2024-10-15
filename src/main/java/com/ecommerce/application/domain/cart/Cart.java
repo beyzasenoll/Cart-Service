@@ -2,16 +2,25 @@ package com.ecommerce.application.domain.cart;
 
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
-import lombok.Data;
+import lombok.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 @Component
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Cart {
+    private final Logger logger = LoggerFactory.getLogger(Cart.class);
+
     private final List<Item> items = new ArrayList<>();
     private double totalPrice;
 
@@ -25,12 +34,23 @@ public class Cart {
     }
 
     public boolean removeItem(int itemId) {
+        Item itemToRemove = findItemInCart(itemId, this);
+        if (itemToRemove == null) {
+            logger.warn("Item with ID {} not found in cart.", itemId);
+            return false;
+        }
+
         boolean removed = items.removeIf(item -> item.getItemId() == itemId);
         if (removed) {
             calculateTotalPrice();
+            logger.info("Item removed from cart: {}", itemToRemove);
+        } else {
+            logger.error("Failed to remove item: {}", itemToRemove);
         }
+
         return removed;
     }
+
 
     public List<Item> getItems() {
         return new ArrayList<>(items);

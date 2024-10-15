@@ -2,7 +2,9 @@ package com.ecommerce.application.dto;
 
 
 import com.ecommerce.application.domain.promotion.Promotion;
+import lombok.Builder;
 
+@Builder
 public class PromotionDto {
     private final Promotion promotion;
     private final double discount;

@@ -5,7 +5,6 @@ import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.dto.ResponseDto;
 import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
 import com.ecommerce.application.service.CartService;
-import com.ecommerce.application.service.PromotionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ public class CartController {
     private final CartService cartService;
     private final Logger logger = LoggerFactory.getLogger(CartController.class);
 
-    public CartController(CartService cartService, PromotionService promotionService) {
+    public CartController(CartService cartService) {
         this.cartService = cartService;
     }
 

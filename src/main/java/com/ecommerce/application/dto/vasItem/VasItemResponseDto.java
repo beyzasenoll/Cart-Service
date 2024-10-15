@@ -1,15 +1,17 @@
 package com.ecommerce.application.dto.vasItem;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class VasItemResponseDto {
-    private int vasItemId;
-    private int categoryId;
-    private int sellerId;
-    private double price;
-    private int quantity;
+    public int vasItemId;
+    public int categoryId;
+    public int sellerId;
+    public double price;
+    public int quantity;
 
 }

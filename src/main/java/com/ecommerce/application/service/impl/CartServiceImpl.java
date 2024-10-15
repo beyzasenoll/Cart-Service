@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class CartServiceImpl implements CartService {
 
-    private static final int MAX_UNIQUE_ITEMS = 10;
-    private static final int MAX_TOTAL_ITEMS = 30;
-    private static final double MAX_TOTAL_PRICE = 500000;
+    public static final Integer MAX_TOTAL_ITEMS =30 ;
+    public static final Double MAX_TOTAL_PRICE = 500000.0;
+    public static final int MAX_UNIQUE_ITEMS = 10;
     private final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
     private final Cart cart;
     private final ItemMapper itemMapper;
@@ -62,6 +62,10 @@ public class CartServiceImpl implements CartService {
                     return false;
                 }
             }
+            if (!isCartValid(item, cart)) {
+                logger.error("Item cannot be added to the cart: Cart validation failed.");
+                return false;
+            }
             boolean isAdded = cart.addItem(item);
             if (isAdded) {
                 logger.info("Item added to cart: {}", item);
@@ -95,26 +99,13 @@ public class CartServiceImpl implements CartService {
 
         double bestDiscount = promotionService.applyBestPromotion(cart);
         int bestPromotionId = promotionService.getBestPromotionId(cart);
-
-        return new CartDisplayDto(itemResponseDtoList, cart.getTotalPrice(), bestDiscount, bestPromotionId);
+        double totalPrice=cart.getTotalPrice();
+        return new CartDisplayDto(itemResponseDtoList, totalPrice, bestDiscount, bestPromotionId);
     }
 
     @Override
     public boolean removeItemFromCart(int itemId) {
-        Item itemToRemove = cart.findItemInCart(itemId, cart);
-        if (itemToRemove == null) {
-            logger.warn("Item with ID {} not found in cart.", itemId);
-            return false;
-        }
-
-        boolean isRemoved = cart.removeItem(itemId);
-        if (isRemoved) {
-            logger.info("Item removed from cart: {}", itemToRemove);
-        } else {
-            logger.error("Failed to remove item: {}", itemToRemove);
-        }
-
-        return isRemoved;
+        return cart.removeItem(itemId);
     }
 
     public boolean isCartValid(Item item, Cart cart) {
@@ -142,7 +133,6 @@ public class CartServiceImpl implements CartService {
         logger.info("Cart validation successful.");
         return true;
     }
-
 }
 
 

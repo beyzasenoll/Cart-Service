@@ -1,17 +1,22 @@
 package com.ecommerce.application.dto.item;
 
 import com.ecommerce.application.dto.vasItem.VasItemResponseDto;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemResponseDto {
     public int itemId;
     public int categoryId;
     public int sellerId;
     public double price;
     public int quantity;
-    protected List<VasItemResponseDto> vasItems = new ArrayList<>();
+    public List<VasItemResponseDto> vasItems = new ArrayList<>();
 
     public void addVasItem(VasItemResponseDto VasItemResponseDto) {
         vasItems.add(VasItemResponseDto);

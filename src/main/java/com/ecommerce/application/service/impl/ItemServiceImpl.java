@@ -53,7 +53,7 @@ public class ItemServiceImpl implements ItemService {
             return false;
         }
 
-        existingItem.setQuantity(newQuantity); // Miktarı güncelle
+        existingItem.setQuantity(newQuantity);
         logger.info("Quantity updated for item: {}", existingItem);
         return true;
     }

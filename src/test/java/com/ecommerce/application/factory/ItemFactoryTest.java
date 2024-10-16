@@ -6,7 +6,9 @@ import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
 import com.ecommerce.application.factory.impl.ItemFactoryImpl;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ItemFactoryTest {
 
@@ -28,20 +30,20 @@ public class ItemFactoryTest {
         // given
         Item vasItem = itemFactory.createItem(2, 3242, 5002, 49.99, 1);
 
-        //then
+        //Then
         assertTrue(vasItem instanceof VasItem);
         assertEquals(2, vasItem.getItemId());
-        assertEquals(1002, vasItem.getSellerId());
+        assertEquals(5003, vasItem.getSellerId());
         assertEquals(49.99, vasItem.getPrice());
         assertEquals(1, vasItem.getQuantity());
     }
 
     @Test
     public void testCreateDefaultItem() {
-        // given
+        // Given
         Item defaultItem = itemFactory.createItem(3, 1001, 1003, 19.99, 1);
 
-        //then
+        //Then
         assertTrue(defaultItem instanceof DefaultItem);
         assertEquals(3, defaultItem.getItemId());
         assertEquals(1003, defaultItem.getSellerId());
@@ -51,10 +53,10 @@ public class ItemFactoryTest {
 
     @Test
     public void testCreateItemWithUnknownCategory() {
-        // given
+        // Given
         Item unknownCategoryItem = itemFactory.createItem(4, 9999, 1004, 29.99, 1);
 
-        //then
+        //Then
         assertTrue(unknownCategoryItem instanceof DefaultItem);
         assertEquals(4, unknownCategoryItem.getItemId());
         assertEquals(1004, unknownCategoryItem.getSellerId());

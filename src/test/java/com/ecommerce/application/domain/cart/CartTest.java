@@ -1,13 +1,11 @@
 package com.ecommerce.application.domain.cart;
 
-import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.DigitalItem;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 

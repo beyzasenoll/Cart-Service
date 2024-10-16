@@ -1,6 +1,5 @@
 package com.ecommerce.application.domain.item;
 
-import com.ecommerce.application.domain.item.VasItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

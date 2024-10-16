@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class CartServiceImpl implements CartService {
 
-    public static final Integer MAX_TOTAL_ITEMS =30 ;
+    public static final Integer MAX_TOTAL_ITEMS = 30;
     public static final Double MAX_TOTAL_PRICE = 500000.0;
     public static final int MAX_UNIQUE_ITEMS = 10;
     private final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
@@ -99,7 +99,7 @@ public class CartServiceImpl implements CartService {
 
         double bestDiscount = promotionService.applyBestPromotion(cart);
         int bestPromotionId = promotionService.getBestPromotionId(cart);
-        double totalPrice=cart.getTotalPrice();
+        double totalPrice = cart.getTotalPrice();
         return new CartDisplayDto(itemResponseDtoList, totalPrice, bestDiscount, bestPromotionId);
     }
 

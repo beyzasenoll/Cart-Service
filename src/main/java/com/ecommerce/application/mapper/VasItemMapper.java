@@ -18,6 +18,9 @@ public class VasItemMapper {
     }
 
     public static VasItemResponseDto toResponseDto(VasItem vasItem) {
+        if (vasItem == null) {
+            return null;
+        }
         VasItemResponseDto responseDto = new VasItemResponseDto();
         responseDto.setVasItemId(vasItem.getItemId());
         responseDto.setCategoryId(vasItem.getCategoryId());

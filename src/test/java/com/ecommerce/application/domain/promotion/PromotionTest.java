@@ -2,10 +2,6 @@ package com.ecommerce.application.domain.promotion;
 
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.Item;
-import com.ecommerce.application.domain.promotion.CategoryPromotion;
-import com.ecommerce.application.domain.promotion.SameSellerPromotion;
-import com.ecommerce.application.domain.promotion.TotalPricePromotion;
-import com.ecommerce.application.factory.ItemFactory;
 import com.ecommerce.application.factory.impl.ItemFactoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +10,8 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class PromotionTest {
@@ -30,7 +27,7 @@ public class PromotionTest {
         categoryPromotion = new CategoryPromotion();
         sameSellerPromotion = new SameSellerPromotion();
         totalPricePromotion = new TotalPricePromotion();
-        itemFactory=new ItemFactoryImpl();
+        itemFactory = new ItemFactoryImpl();
         cart = Mockito.mock(Cart.class);
     }
 
@@ -66,7 +63,7 @@ public class PromotionTest {
 
         // Then
         assertEquals(2.5, discount); // %5 of 50
-        assertEquals(77.5, cart.getTotalPrice()-discount); // 80 - 2.5
+        assertEquals(77.5, cart.getTotalPrice() - discount); // 80 - 2.5
     }
 
     @Test
@@ -98,9 +95,8 @@ public class PromotionTest {
         double discount = sameSellerPromotion.applyDiscount(cart);
 
         // Then
-        assertEquals(8, discount); // Add delta for floating point comparison
+        assertEquals(8, discount);
     }
-
 
 
     @Test

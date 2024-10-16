@@ -24,6 +24,7 @@ public class ItemMapper {
         this.vasItemMapper = vasItemMapper;
     }
 
+
     public ItemResponseDto toItemDto(Item item) {
         if (item == null) {
             return null;
@@ -41,7 +42,7 @@ public class ItemMapper {
 
             List<VasItem> vasItems = defaultItem.getVasItems();
             for (VasItem vasItem : vasItems) {
-               VasItemResponseDto vasItemResponseDto= VasItemMapper.toResponseDto(vasItem);
+                VasItemResponseDto vasItemResponseDto = VasItemMapper.toResponseDto(vasItem);
                 itemResponseDto.getVasItems().add(vasItemResponseDto);
             }
         }
@@ -49,19 +50,20 @@ public class ItemMapper {
     }
 
 
-
     public Item updateItemFromDto(ItemRequestDto itemRequestDto) {
         if (itemRequestDto == null) {
             return null;
         }
 
+
         return itemFactory.createItem(
-                itemRequestDto.itemId,
-                itemRequestDto.categoryId,
-                itemRequestDto.sellerId,
-                itemRequestDto.price,
-                itemRequestDto.quantity
+                itemRequestDto.getItemId(),
+                itemRequestDto.getCategoryId(),
+                itemRequestDto.getSellerId(),
+                itemRequestDto.getPrice(),
+                itemRequestDto.getQuantity()
         );
     }
+
 }
 

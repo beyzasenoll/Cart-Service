@@ -1,8 +1,5 @@
 package com.ecommerce.application.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.VasItem;
@@ -17,6 +14,9 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class VasItemServiceTest {
 

@@ -2,7 +2,6 @@ package com.ecommerce.application.service;
 
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.promotion.Promotion;
-
 import com.ecommerce.application.dto.PromotionDto;
 import org.springframework.stereotype.Service;
 

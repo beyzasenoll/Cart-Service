@@ -17,6 +17,6 @@ public class DigitalItem extends Item {
 
     @Override
     public boolean isValidQuantity(int quantity) {
-        return 0 < quantity  && quantity <= MAX_QUANTITY;
+        return 0 < quantity && quantity <= MAX_QUANTITY;
     }
 }

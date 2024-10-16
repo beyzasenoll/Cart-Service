@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public abstract class Item {
 
-    public double price;
-    public int quantity;
+    private double price;
+    private int quantity;
     private int itemId;
     private int categoryId;
     private int sellerId;

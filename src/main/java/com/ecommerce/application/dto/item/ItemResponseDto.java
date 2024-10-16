@@ -12,12 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemResponseDto {
-    public int itemId;
-    public int categoryId;
-    public int sellerId;
-    public double price;
-    public int quantity;
     public List<VasItemResponseDto> vasItems = new ArrayList<>();
+    private int itemId;
+    private int categoryId;
+    private int sellerId;
+    private double price;
+    private int quantity;
 
     public void addVasItem(VasItemResponseDto VasItemResponseDto) {
         vasItems.add(VasItemResponseDto);

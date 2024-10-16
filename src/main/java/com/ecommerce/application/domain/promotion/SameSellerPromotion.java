@@ -23,7 +23,7 @@ public class SameSellerPromotion implements Promotion {
 
     @Override
     public boolean isApplicable(Cart cart) {
-        return cart.hasSameSellerItems(); // Only applicable if items have the same seller
+        return cart.hasSameSellerItems();
     }
 }
 

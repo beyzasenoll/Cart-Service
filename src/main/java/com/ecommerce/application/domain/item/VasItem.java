@@ -4,11 +4,11 @@ public class VasItem extends Item {
 
     private static final int MAX_QUANTITY = 3;
     private static final int DEFAULT_SELLER_ID = 5003;
-    private static final int DEAFULT_CATEGORY_ID = 3442;
+    private static final int DEFAULT_CATEGORY_ID = 3442;
 
 
     public VasItem(int itemId, double price, int quantity) {
-        super(itemId, DEAFULT_CATEGORY_ID, DEFAULT_SELLER_ID, price, quantity);
+        super(itemId, DEFAULT_CATEGORY_ID, DEFAULT_SELLER_ID, price, quantity);
     }
 
     @Override

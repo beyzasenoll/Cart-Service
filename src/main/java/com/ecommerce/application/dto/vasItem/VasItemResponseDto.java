@@ -8,10 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VasItemResponseDto {
-    public int vasItemId;
-    public int categoryId;
-    public int sellerId;
-    public double price;
-    public int quantity;
+    private int vasItemId;
+    private int categoryId;
+    private int sellerId;
+    private double price;
+    private int quantity;
 
 }

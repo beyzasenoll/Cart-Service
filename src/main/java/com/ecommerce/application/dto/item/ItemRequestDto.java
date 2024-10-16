@@ -8,9 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ItemRequestDto {
-    public int itemId;
-    public int categoryId;
-    public int sellerId;
-    public double price;
-    public int quantity;
+    private int itemId;
+    private int categoryId;
+    private int sellerId;
+    private double price;
+    private int quantity;
 }

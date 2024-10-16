@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class CartServiceImpl implements CartService {
 
-    public static final Integer MAX_TOTAL_ITEMS = 30;
-    public static final Double MAX_TOTAL_PRICE = 500000.0;
-    public static final int MAX_UNIQUE_ITEMS = 10;
+    private static final Integer MAX_TOTAL_ITEMS = 30;
+    private static final Double MAX_TOTAL_PRICE = 500000.0;
+    private static final int MAX_UNIQUE_ITEMS = 10;
     private final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
     private final Cart cart;
     private final ItemMapper itemMapper;

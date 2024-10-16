@@ -1,6 +1,5 @@
-package com.ecommerce.controller;
+package com.ecommerce.application.controller;
 
-import com.ecommerce.application.controller.CartController;
 import com.ecommerce.application.dto.CartDisplayDto;
 import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
@@ -22,15 +21,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class CartControllerTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private MockMvc mockMvc;
-
     @Mock
     private CartService cartService;
-
     @InjectMocks
     private CartController cartController;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setup() {

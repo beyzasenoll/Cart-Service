@@ -31,11 +31,11 @@ public class ItemMapper {
         }
 
         ItemResponseDto itemResponseDto = new ItemResponseDto();
-        itemResponseDto.itemId = item.getItemId();
-        itemResponseDto.categoryId = item.getCategoryId();
-        itemResponseDto.sellerId = item.getSellerId();
-        itemResponseDto.price = item.getPrice();
-        itemResponseDto.quantity = item.getQuantity();
+        itemResponseDto.setItemId(item.getItemId());
+        itemResponseDto.setCategoryId(item.getCategoryId());
+        itemResponseDto.setSellerId(item.getSellerId());
+        itemResponseDto.setPrice(item.getPrice());
+        itemResponseDto.setQuantity(item.getQuantity());
 
         if (item instanceof DefaultItem) {
             DefaultItem defaultItem = (DefaultItem) item;

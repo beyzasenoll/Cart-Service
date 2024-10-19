@@ -6,7 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CategoryPromotion implements Promotion {
-    private static final int ID = 5676;
+    private static final int PROMOTION_ID = 5676;
+    private static final int TARGET_CATEGORY_ID = 3003;
+    private static final double DISCOUNT_RATE = 0.05;
 
     @Override
     public double applyDiscount(Cart cart) {
@@ -16,8 +18,8 @@ public class CategoryPromotion implements Promotion {
 
         double discount = 0;
         for (Item item : cart.getItems()) {
-            if (item.getCategoryId() == 3003) {
-                discount += item.getTotalPrice() * 0.05; // %5 discount
+            if (item.getCategoryId() == TARGET_CATEGORY_ID) {
+                discount += item.getTotalPrice() * DISCOUNT_RATE;
             }
         }
         cart.setTotalPrice(cart.getTotalPrice() - discount);
@@ -26,13 +28,13 @@ public class CategoryPromotion implements Promotion {
 
     @Override
     public int getId() {
-        return ID;
+        return PROMOTION_ID;
     }
 
     @Override
     public boolean isApplicable(Cart cart) {
         for (Item item : cart.getItems()) {
-            if (item.getCategoryId() == 3003) {
+            if (item.getCategoryId() == TARGET_CATEGORY_ID) {
                 return true;
             }
         }

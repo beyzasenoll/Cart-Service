@@ -6,6 +6,7 @@ import com.ecommerce.application.domain.item.VasItem;
 import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.dto.item.ItemResponseDto;
 import com.ecommerce.application.dto.vasItem.VasItemResponseDto;
+import com.ecommerce.application.exception.item.ItemException;
 import com.ecommerce.application.factory.ItemFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,9 +53,8 @@ public class ItemMapper {
 
     public Item updateItemFromDto(ItemRequestDto itemRequestDto) {
         if (itemRequestDto == null) {
-            return null;
+            throw new ItemException.InvalidItemRequestException("ItemRequestDto cannot be null.");
         }
-
 
         return itemFactory.createItem(
                 itemRequestDto.getItemId(),

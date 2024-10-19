@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TotalPricePromotion implements Promotion {
-    private static final int ID = 1232;
+    private static final int PROMOTION_ID = 1232;
 
     private static final double DISCOUNT_1_THRESHOLD = 5000;
     private static final double DISCOUNT_2_THRESHOLD = 10000;
@@ -28,7 +28,7 @@ public class TotalPricePromotion implements Promotion {
 
     @Override
     public int getId() {
-        return ID;
+        return PROMOTION_ID;
     }
 
     @Override

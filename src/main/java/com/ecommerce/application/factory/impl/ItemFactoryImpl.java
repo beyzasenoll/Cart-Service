@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ItemFactoryImpl implements ItemFactory {
-
+// todo create item içerisi refactor edilecek
     @Override
     public Item createItem(int itemId, int categoryId, int sellerId, double price, int quantity) {
         if (categoryId == 7889) {

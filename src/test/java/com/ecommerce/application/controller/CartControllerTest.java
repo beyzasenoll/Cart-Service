@@ -2,7 +2,6 @@ package com.ecommerce.application.controller;
 
 import com.ecommerce.application.dto.CartDisplayDto;
 import com.ecommerce.application.dto.item.ItemRequestDto;
-import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
 import com.ecommerce.application.service.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,8 +53,8 @@ class CartControllerTest {
     @Test
     void addVasItemToItemTest() throws Exception {
         // Given
-        VasItemRequestDto vasItemRequestDto = new VasItemRequestDto(/* params */);
-        when(cartService.addVasItemToItem(any(VasItemRequestDto.class))).thenReturn(true);
+        ItemRequestDto vasItemRequestDto = new ItemRequestDto(/* params */);
+        when(cartService.addVasItemToItem(any(ItemRequestDto.class))).thenReturn(true);
 
         // When & Then
         mockMvc.perform(post("/cart/addVasItemToItem")
@@ -65,7 +64,7 @@ class CartControllerTest {
                 .andExpect(jsonPath("$.result").value(true))
                 .andExpect(jsonPath("$.message").value("VAS item added successfully."));
 
-        verify(cartService, times(1)).addVasItemToItem(any(VasItemRequestDto.class));
+        verify(cartService, times(1)).addVasItemToItem(any(ItemRequestDto.class));
     }
 
     @Test
@@ -101,6 +100,8 @@ class CartControllerTest {
     void displayCartTest() throws Exception {
         // Given
         CartDisplayDto displayDto = new CartDisplayDto(/* params */);
+
+
         when(cartService.displayCart()).thenReturn(displayDto);
 
         // When & Then
@@ -112,3 +113,5 @@ class CartControllerTest {
         verify(cartService, times(1)).displayCart();
     }
 }
+
+//TODO: how to add integration tests ? hiçbir şey mocklanmaz.

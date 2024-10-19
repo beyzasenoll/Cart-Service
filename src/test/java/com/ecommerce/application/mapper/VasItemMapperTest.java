@@ -1,7 +1,7 @@
 package com.ecommerce.application.mapper;
 
 import com.ecommerce.application.domain.item.VasItem;
-import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
+import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.dto.vasItem.VasItemResponseDto;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ public class VasItemMapperTest {
     @Test
     public void givenValidVasItemRequestDto_whenMappedToVasItem_thenFieldsShouldMatch() {
         // Given
-        VasItemRequestDto requestDto = new VasItemRequestDto();
+        ItemRequestDto requestDto = new ItemRequestDto();
         requestDto.setVasItemId(1);
         requestDto.setPrice(100.0);
         requestDto.setQuantity(2);
@@ -33,7 +33,7 @@ public class VasItemMapperTest {
     @Test
     public void givenInvalidQuantity_whenMappedToVasItem_thenQuantityShouldBeValid() {
         // Given
-        VasItemRequestDto requestDto = new VasItemRequestDto();
+        ItemRequestDto requestDto = new ItemRequestDto();
         requestDto.setVasItemId(1);
         requestDto.setPrice(100.0);
         requestDto.setQuantity(5); // Invalid quantity as MAX_QUANTITY is 3
@@ -48,7 +48,7 @@ public class VasItemMapperTest {
     @Test
     public void givenNullVasItemRequestDto_whenMappedToVasItem_thenShouldReturnNull() {
         // Given
-        VasItemRequestDto requestDto = null;
+        ItemRequestDto requestDto = null;
 
         // When
         VasItem vasItem = VasItemMapper.toVasItem(requestDto);

@@ -4,7 +4,8 @@ import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.domain.item.VasItem;
-import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
+import com.ecommerce.application.dto.item.ItemRequestDto;
+import com.ecommerce.application.exception.vasItem.VasItemException;
 import com.ecommerce.application.mapper.VasItemMapper;
 import com.ecommerce.application.service.VasItemService;
 import org.slf4j.Logger;
@@ -16,12 +17,12 @@ public class VasItemServiceImpl implements VasItemService {
     private final Cart cart;
     Logger logger = LoggerFactory.getLogger(VasItemServiceImpl.class);
 
-    public VasItemServiceImpl(ItemServiceImpl itemServiceImpl, Cart cart) {
+    public VasItemServiceImpl(Cart cart) {
         this.cart = cart;
     }
 
     @Override
-    public boolean addVasItemToItem(VasItemRequestDto vasItemRequestDto) {
+    public boolean addVasItemToItem(ItemRequestDto vasItemRequestDto) {
         logger.info("Attempting to add VAS item to cart: {}", vasItemRequestDto);
 
         validateSellerId(vasItemRequestDto.getSellerId());
@@ -33,7 +34,6 @@ public class VasItemServiceImpl implements VasItemService {
             return addVasItem(vasItem, parentItem);
         }
 
-        logger.warn("Parent item not found or cannot add VAS item. Parent ID: {}", vasItemRequestDto.getItemId());
         return false;
     }
 
@@ -52,18 +52,20 @@ public class VasItemServiceImpl implements VasItemService {
                 return true;
             }
         }
-        return false;
+        String errorMessage = "cannot add VAS item. Parent ID: " + vasItem.getItemId();
+        logger.warn(errorMessage);
+        throw new VasItemException.CannotAddedVasItem(errorMessage);
     }
 
     private DefaultItem findParentItem(int parentId) {
         logger.info("Searching for parent item with ID: {}", parentId);
         for (Item item : cart.getItems()) {
             if (item.getItemId() == parentId && item instanceof DefaultItem) {
-                return (DefaultItem) item; // Return found parent item
+                return (DefaultItem) item;
             }
         }
-
-        logger.warn("Parent item with ID {} not found in cart.", parentId);
-        return null;
+        String errorMessage = "Parent item not found";
+        logger.warn(errorMessage);
+        throw new VasItemException.ParentItemNotFoundException(errorMessage);
     }
 }

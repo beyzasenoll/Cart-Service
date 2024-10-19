@@ -2,7 +2,7 @@ package com.ecommerce.application.mapper;
 
 
 import com.ecommerce.application.domain.item.VasItem;
-import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
+import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.dto.vasItem.VasItemResponseDto;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 public class VasItemMapper {
 
-    public static VasItem toVasItem(VasItemRequestDto vasItemRequestDto) {
+    public static VasItem toVasItem(ItemRequestDto vasItemRequestDto) {
         if (vasItemRequestDto == null) {
             return null;
         }

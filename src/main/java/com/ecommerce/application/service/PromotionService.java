@@ -16,7 +16,7 @@ public class PromotionService {
         this.promotions = promotions;
     }
 
-    public double applyBestPromotion(Cart cart) {
+    public double findDiscount(Cart cart) {
         PromotionDto bestPromotion = findBestPromotion(cart);
         cart.applyDiscount(bestPromotion.getDiscount());
         return bestPromotion.getDiscount();

@@ -3,7 +3,7 @@ package com.ecommerce.application.service;
 import com.ecommerce.application.domain.cart.Cart;
 import com.ecommerce.application.domain.item.DefaultItem;
 import com.ecommerce.application.domain.item.VasItem;
-import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
+import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.service.impl.VasItemServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,13 +29,13 @@ public class VasItemServiceTest {
     @Mock
     private DefaultItem parentItem;
 
-    private VasItemRequestDto vasItemRequestDto;
+    private ItemRequestDto vasItemRequestDto;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        vasItemRequestDto = new VasItemRequestDto();
+        vasItemRequestDto = new ItemRequestDto();
         vasItemRequestDto.setSellerId(5003);
         vasItemRequestDto.setItemId(1);
     }
@@ -48,7 +48,7 @@ public class VasItemServiceTest {
         when(parentItem.canAddVasItem()).thenReturn(true);
         when(parentItem.addOrUpdateVasItem(any(VasItem.class))).thenReturn(true);
 
-        vasItemRequestDto = VasItemRequestDto.builder()
+        vasItemRequestDto = ItemRequestDto.builder()
                 .itemId(parentItem.getItemId()) // Match parent item's ID
                 .sellerId(5003) // Ensure this is valid
                 .build();

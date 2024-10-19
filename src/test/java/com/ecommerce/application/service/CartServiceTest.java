@@ -6,10 +6,8 @@ import com.ecommerce.application.domain.item.Item;
 import com.ecommerce.application.dto.CartDisplayDto;
 import com.ecommerce.application.dto.item.ItemRequestDto;
 import com.ecommerce.application.dto.item.ItemResponseDto;
-import com.ecommerce.application.dto.vasItem.VasItemRequestDto;
 import com.ecommerce.application.mapper.ItemMapper;
 import com.ecommerce.application.service.impl.CartServiceImpl;
-import com.ecommerce.application.service.impl.ItemServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,8 +34,6 @@ class CartServiceTest {
     @Mock
     private PromotionService promotionService;
 
-    @Mock
-    private ItemServiceImpl itemServiceImpl;
 
     @Mock
     private VasItemService vasItemService;
@@ -50,6 +46,8 @@ class CartServiceTest {
     @Test
     public void givenValidItem_whenAddItemToCart_thenItemAddedSuccessfully() {
         // Given
+        //ItemRequestDto itemRequestDto = new ItemRequestDto();
+
         ItemRequestDto itemRequestDto = ItemRequestDto.builder()
                 .itemId(1)
                 .categoryId(7889) // Category for DigitalItem
@@ -61,10 +59,10 @@ class CartServiceTest {
         Item item = new DigitalItem(1, 101, 200.0, 2);
 
         when(itemMapper.updateItemFromDto(itemRequestDto)).thenReturn(item);
-        when(itemServiceImpl.isItemAddable(itemRequestDto, item)).thenReturn(true);
-        when(cart.findItemInCart(item.getItemId(), cart)).thenReturn(null);
+        when(item.validateItem(item)).thenReturn(true);
+        when(cart.findItemInCart(item.getItemId(), cart.getItems())).thenReturn(null);
         when(cart.addItem(item)).thenReturn(true);
-        when(promotionService.applyBestPromotion(cart)).thenReturn(10.0);
+        when(promotionService.findDiscount(cart)).thenReturn(10.0);
 
         // When
         boolean result = cartService.addItemToCart(itemRequestDto);
@@ -72,7 +70,7 @@ class CartServiceTest {
         // Then
         assertTrue(result);
         verify(cart, times(1)).addItem(item);
-        verify(promotionService, times(1)).applyBestPromotion(cart);
+        verify(promotionService, times(1)).findDiscount(cart);
     }
 
     @Test
@@ -89,7 +87,7 @@ class CartServiceTest {
         Item item = new DigitalItem(1, 101, 200.0, 50);
 
         when(itemMapper.updateItemFromDto(itemRequestDto)).thenReturn(item);
-        when(itemServiceImpl.isItemAddable(itemRequestDto, item)).thenReturn(false);
+        when(item.validateItem(item)).thenReturn(false);
 
         // When
         boolean result = cartService.addItemToCart(itemRequestDto);
@@ -97,13 +95,13 @@ class CartServiceTest {
         // Then
         assertFalse(result);
         verify(cart, never()).addItem(item);
-        verify(promotionService, never()).applyBestPromotion(cart);
+        verify(promotionService, never()).findDiscount(cart);
     }
 
     @Test
     public void givenVasItem_whenAddVasItemToItem_thenVasItemAddedSuccessfully() {
         // Given
-        VasItemRequestDto vasItemRequestDto = VasItemRequestDto.builder()
+        ItemRequestDto vasItemRequestDto = ItemRequestDto.builder()
                 .itemId(1)
                 .vasItemId(101)
                 .categoryId(3242)
@@ -124,6 +122,7 @@ class CartServiceTest {
 
     @Test
     public void givenCartWithItems_whenDisplayCart_thenReturnCartDetails() {
+        //TODO: "should return cart details when display cart"
         // Given
         List<ItemResponseDto> items = new ArrayList<>();
         items.add(ItemResponseDto.builder()
@@ -135,7 +134,7 @@ class CartServiceTest {
                 .build());
 
         when(cart.getItems()).thenReturn(new ArrayList<>());
-        when(promotionService.applyBestPromotion(cart)).thenReturn(20.0);
+        when(promotionService.findDiscount(cart)).thenReturn(20.0);
         when(promotionService.getBestPromotionId(cart)).thenReturn(1);
         when(cart.getTotalPrice()).thenReturn(400.0);
 

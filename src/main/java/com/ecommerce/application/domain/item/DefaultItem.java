@@ -8,6 +8,11 @@ import java.util.List;
 @Getter
 public class DefaultItem extends Item {
     private static final int MAX_QUANTITY = 10;
+    private static final int ELECTRONIC_CATEGORY_ID = 1001;
+    private static final int FURNITURE_CATEGORY_ID = 3004;
+
+
+
     private final List<VasItem> vasItems = new ArrayList<>();
 
     public DefaultItem(int itemId, int categoryId, int sellerId, double price, int quantity) {
@@ -25,7 +30,7 @@ public class DefaultItem extends Item {
     }
 
     public boolean canAddVasItem() {
-        return (getCategoryId() == 1001 || getCategoryId() == 3004); // Mobilya veya Elektronik
+        return (getCategoryId() == ELECTRONIC_CATEGORY_ID || getCategoryId() == FURNITURE_CATEGORY_ID);
     }
 
     public boolean addOrUpdateVasItem(VasItem newVasItem) {
